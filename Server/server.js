@@ -1,74 +1,23 @@
-const express = require('express');
-const { MongoClient, ObjectId } = require('mongodb');
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const { connectDB } = require("../config/db");
 
+dotenv.config();
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON
 app.use(express.json());
+app.use(cors());
 
-// MongoDB connection details
-const uri = 'mongodb://127.0.0.1:27017'; // Change if your MongoDB is hosted elsewhere
-const dbName = 'sampledb'; // Replace with your database name
-let db;
+connectDB().then(() => {
+    app.use("/api/users", require("../routes/userRoutes"));
+    app.use("/api/admins", require("../routes/adminRoutes"));
+    app.use("/api/rooms", require("../routes/roomRoutes"));
+    app.use("/api/feedback", require("../routes/feedbackRoutes"));
+    app.use("/api/announcements", require("../routes/announcementRoutes"));
+    app.use("/api/reservations", require("../routes/reservationRoutes"));
+    app.use("/api/logs", require("../routes/logRoutes"));
 
-// Connect to MongoDB
-MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(client => {
-    console.log('Connected to MongoDB');
-    db = client.db(dbName);
-  })
-  .catch(err => console.error(err));
-
-// Routes
-// Get all users
-app.get('/users', async (req, res) => {
-  try {
-    const users = await db.collection('users').find().toArray();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
-
-// Add a new user
-app.post('/users', async (req, res) => {
-  try {
-    const user = req.body;
-    const result = await db.collection('users').insertOne(user);
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to add user' });
-  }
-});
-
-// Update a user by ID
-app.put('/users/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const updatedData = req.body;
-    const result = await db.collection('users').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updatedData }
-    );
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update user' });
-  }
-});
-
-// Delete a user by ID
-app.delete('/users/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await db.collection('users').deleteOne({ _id: new ObjectId(id) });
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to delete user' });
-  }
-});
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+    app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
 });

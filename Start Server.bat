@@ -1,15 +1,15 @@
 @echo off
-REM Read from config.txt and set environment variables
+REM Load environment variables from config.txt
 for /f "tokens=1,* delims==" %%A in (config.txt) do (
     set %%A=%%B
 )
 
-REM Start MongoDB server (mongod.exe)
+REM Start MongoDB Server
 start "" "%MONGODB_DIR%\mongod.exe" --dbpath="%DB_PATH%"
 
-REM Wait a few seconds to ensure MongoDB starts
+REM Wait for MongoDB to initialize
 timeout /t 5
 
-REM Start Node.js server
+REM Start Node.js Server
 cd /d "%NODE_SERVER_PATH%"
 node server.js
