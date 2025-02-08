@@ -1,7 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 
-// Get all users
+/**
+ * Retrieve all users from the database.
+ */
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await getDB().collection("users").find().toArray();
@@ -11,50 +13,84 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// Get user by ID
+/**
+ * Retrieve a specific user by ID.
+ */
 exports.getUserById = async (req, res) => {
     try {
-        const user = await getDB().collection("users").findOne({ _id: new ObjectId(req.params.id) });
+        const userId = req.params.id;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
+
+        const user = await getDB().collection("users").findOne({ _id: new ObjectId(userId) });
+
         if (!user) return res.status(404).json({ error: "User not found" });
+
         res.json(user);
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch user" });
     }
 };
 
-// Add new user
+/**
+ * Create a new user with the provided details.
+ */
 exports.createUser = async (req, res) => {
     try {
-        const { name, email, phoneNumber, company } = req.body;
-        if (!name || !email) return res.status(400).json({ error: "Name and Email are required" });
+        const { name, password, email, phoneNumber, company } = req.body;
 
-        const result = await getDB().collection("users").insertOne({ name, email, phoneNumber, company });
-        res.status(201).json({ message: "User created", id: result.insertedId });
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "Name, email, and password are required" });
+        }
+
+        const newUser = { name, password, email, phoneNumber, company };
+
+        const result = await getDB().collection("users").insertOne(newUser);
+        res.status(201).json(result);
     } catch (err) {
-        res.status(500).json({ error: "Failed to add user" });
+        res.status(500).json({ error: "Failed to create user" });
     }
 };
 
-// Update user by ID
+/**
+ * Update an existing user by ID.
+ */
 exports.updateUser = async (req, res) => {
     try {
+        const userId = req.params.id;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
+
+        const updateData = req.body;
         const result = await getDB().collection("users").updateOne(
-            { _id: new ObjectId(req.params.id) },
-            { $set: req.body }
+            { _id: new ObjectId(userId) },
+            { $set: updateData }
         );
-        if (!result.modifiedCount) return res.status(404).json({ error: "User not found or no changes made" });
-        res.json({ message: "User updated" });
+
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: "Failed to update user" });
     }
 };
 
-// Delete user by ID
+/**
+ * Delete a user by ID.
+ */
 exports.deleteUser = async (req, res) => {
     try {
-        const result = await getDB().collection("users").deleteOne({ _id: new ObjectId(req.params.id) });
-        if (!result.deletedCount) return res.status(404).json({ error: "User not found" });
-        res.json({ message: "User deleted" });
+        const userId = req.params.id;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
+
+        const result = await getDB().collection("users").deleteOne({ _id: new ObjectId(userId) });
+
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: "Failed to delete user" });
     }
