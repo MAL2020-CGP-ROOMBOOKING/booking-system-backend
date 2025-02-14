@@ -4,11 +4,7 @@
 
 1. **Clone the Repository:**
 
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/booking-system-backend.git](https://www.google.com/search?q=https://github.com/YOUR_USERNAME/booking-system-backend.git)  # Replace with your repo URL
-Install MongoDB Community Edition (Portable):
-
-Download the portable version of MongoDB Community Edition. Link to MongoDB Download (Make sure to choose the correct platform).
+Download the portable version of MongoDB Community Edition.
 
 Configure MongoDB Path:
 
