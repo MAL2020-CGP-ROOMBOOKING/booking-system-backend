@@ -6,61 +6,142 @@ exports.getAllReservations = async (req, res) => {
         const reservations = await getDB().collection("reservations").find().toArray();
         res.json(reservations);
     } catch (err) {
-        res.status(500).json({ error: "Failed to fetch reservations" });
+        console.error("Error fetching reservations:", err);
+        res.status(500).json({ error: "Failed to fetch reservations", details: err.message });
     }
 };
 
 exports.getReservationById = async (req, res) => {
     try {
-        const reservation = await getDB().collection("reservations").findOne({ _id: new ObjectId(req.params.reservationId) });
+        const { reservationId } = req.params;
+        if (!ObjectId.isValid(reservationId)) {
+            return res.status(400).json({ error: "Invalid reservation ID format" });
+        }
+
+        const reservation = await getDB().collection("reservations").findOne({ _id: new ObjectId(reservationId) });
+
         if (!reservation) return res.status(404).json({ error: "Reservation not found" });
+
         res.json(reservation);
     } catch (err) {
-        res.status(500).json({ error: "Failed to fetch reservation" });
+        console.error("Error fetching reservation by ID:", err);
+        res.status(500).json({ error: "Failed to fetch reservation", details: err.message });
     }
 };
 
 exports.createReservation = async (req, res) => {
     try {
         const { userId, roomId, reserveDate, reserveTime, status, adminId } = req.body;
-        if (!userId || !roomId || !reserveDate || !reserveTime) return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
 
-        const result = await getDB().collection("reservations").insertOne({
-            userId,
-            roomId,
-            date: reserveDate, // Fix naming mismatch
-            time: reserveTime, // Fix naming mismatch
+        if (!userId || !roomId || !reserveDate || !reserveTime) {
+            return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
+        }
+
+        if (!ObjectId.isValid(userId) || !ObjectId.isValid(roomId)) {
+            return res.status(400).json({ error: "Invalid User ID or Room ID format" });
+        }
+
+        const newReservation = {
+            userId: new ObjectId(userId),
+            roomId: new ObjectId(roomId),
+            date: new Date(reserveDate),
+            time: reserveTime.trim(),
             status: status || "pending",
-            adminId: adminId || null, // Optional adminId
-            createdAt: new Date()
-        });
+            adminId: adminId ? new ObjectId(adminId) : null,
+            createdAt: new Date(),
+        };
+
+        const result = await getDB().collection("reservations").insertOne(newReservation);
+
+
+        if (!result.insertedId) {
+            return res.status(500).json({ error: "Failed to create reservation" });
+        }
+
+        const logEntry = {
+            actorId: new ObjectId(userId),
+            actorType: "USER",
+            action: "RESERVATION_CREATED",
+            details: { reservationId: result.insertedId, roomId, date: reserveDate, time: reserveTime },
+            timestamp: new Date(),
+        };
+        await getDB().collection("logs").insertOne(logEntry);
 
         res.status(201).json({ message: "Reservation created", id: result.insertedId });
     } catch (err) {
-        res.status(500).json({ error: "Failed to add reservation" });
+        console.error("Error creating reservation:", err);
+        res.status(500).json({ error: "Failed to add reservation", details: err.message });
     }
 };
 
-
 exports.updateReservation = async (req, res) => {
     try {
+        const { reservationId } = req.params;
+        if (!ObjectId.isValid(reservationId)) {
+            return res.status(400).json({ error: "Invalid reservation ID format" });
+        }
+
+        const updateFields = {};
+        if (req.body.reserveDate) updateFields.date = new Date(req.body.reserveDate);
+        if (req.body.reserveTime) updateFields.time = req.body.reserveTime.trim();
+        if (req.body.status) updateFields.status = req.body.status;
+
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ error: "At least one field is required to update" });
+        }
+
         const result = await getDB().collection("reservations").updateOne(
-            { _id: new ObjectId(req.params.reservationId) },
-            { $set: req.body }
+            { _id: new ObjectId(reservationId) },
+            { $set: updateFields }
         );
-        if (!result.modifiedCount) return res.status(404).json({ error: "Reservation not found or no changes made" });
-        res.json({ message: "Reservation updated" });
+
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: "Reservation not found" });
+        }
+
+        const logEntry = {
+            actorId: req.user?.id ? new ObjectId(req.user.id) : "system",
+            actorType: req.user?.role || "system",
+            action: "RESERVATION_UPDATED",
+            details: { reservationId, updatedFields: updateFields },
+            timestamp: new Date(),
+        };
+        await getDB().collection("logs").insertOne(logEntry);
+
+        res.json({ message: "Reservation updated successfully" });
     } catch (err) {
-        res.status(500).json({ error: "Failed to update reservation" });
+        console.error("Error updating reservation:", err);
+        res.status(500).json({ error: "Failed to update reservation", details: err.message });
     }
 };
 
 exports.deleteReservation = async (req, res) => {
     try {
-        const result = await getDB().collection("reservations").deleteOne({ _id: new ObjectId(req.params.reservationId) });
-        if (!result.deletedCount) return res.status(404).json({ error: "Reservation not found" });
-        res.json({ message: "Reservation deleted" });
+        const { reservationId } = req.params;
+        if (!ObjectId.isValid(reservationId)) {
+            return res.status(400).json({ error: "Invalid reservation ID format" });
+        }
+
+        const result = await getDB().collection("reservations").deleteOne({ _id: new ObjectId(reservationId) });
+
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: "Reservation not found" });
+        }
+
+        const logEntry = {
+            actorId: req.user?.id ? new ObjectId(req.user.id) : "system",
+            actorType: req.user?.role || "system",
+            action: "RESERVATION_DELETED",
+            details: { reservationId },
+            timestamp: new Date(),
+        };
+        await getDB().collection("logs").insertOne(logEntry);
+
+        res.json({ message: "Reservation deleted successfully" });
     } catch (err) {
-        res.status(500).json({ error: "Failed to delete reservation" });
+        console.error("Error deleting reservation:", err);
+        res.status(500).json({ error: "Failed to delete reservation", details: err.message });
     }
 };
