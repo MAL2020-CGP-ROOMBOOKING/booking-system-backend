@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 
-// Fetch all reservations
 exports.getAllReservations = async (req, res) => {
     try {
         const reservations = await getDB().collection("reservations").find().toArray();
@@ -12,16 +11,15 @@ exports.getAllReservations = async (req, res) => {
     }
 };
 
-// Fetch a single reservation by ID
 exports.getReservationById = async (req, res) => {
     try {
         const { reservationId } = req.params;
-
         if (!ObjectId.isValid(reservationId)) {
             return res.status(400).json({ error: "Invalid reservation ID format" });
         }
 
         const reservation = await getDB().collection("reservations").findOne({ _id: new ObjectId(reservationId) });
+
         if (!reservation) return res.status(404).json({ error: "Reservation not found" });
 
         res.json(reservation);
@@ -31,17 +29,14 @@ exports.getReservationById = async (req, res) => {
     }
 };
 
-// Create a new reservation
 exports.createReservation = async (req, res) => {
     try {
         const { userId, roomId, reserveDate, reserveTime, status, adminId } = req.body;
 
-        // Validate required fields
         if (!userId || !roomId || !reserveDate || !reserveTime) {
             return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
         }
 
-        // Validate ObjectId format
         if (!ObjectId.isValid(userId) || !ObjectId.isValid(roomId)) {
             return res.status(400).json({ error: "Invalid User ID or Room ID format" });
         }
@@ -49,7 +44,7 @@ exports.createReservation = async (req, res) => {
         const newReservation = {
             userId: new ObjectId(userId),
             roomId: new ObjectId(roomId),
-            date: new Date(reserveDate), // Ensure proper date formatting
+            date: new Date(reserveDate),
             time: reserveTime.trim(),
             status: status || "pending",
             adminId: adminId ? new ObjectId(adminId) : null,
@@ -57,11 +52,12 @@ exports.createReservation = async (req, res) => {
         };
 
         const result = await getDB().collection("reservations").insertOne(newReservation);
+
+
         if (!result.insertedId) {
             return res.status(500).json({ error: "Failed to create reservation" });
         }
 
-        // Log reservation creation
         const logEntry = {
             actorId: new ObjectId(userId),
             actorType: "USER",
@@ -78,7 +74,6 @@ exports.createReservation = async (req, res) => {
     }
 };
 
-// Update a reservation
 exports.updateReservation = async (req, res) => {
     try {
         const { reservationId } = req.params;
@@ -100,11 +95,11 @@ exports.updateReservation = async (req, res) => {
             { $set: updateFields }
         );
 
+
         if (result.matchedCount === 0) {
             return res.status(404).json({ error: "Reservation not found" });
         }
 
-        // Log reservation update
         const logEntry = {
             actorId: req.user?.id ? new ObjectId(req.user.id) : "system",
             actorType: req.user?.role || "system",
@@ -121,7 +116,6 @@ exports.updateReservation = async (req, res) => {
     }
 };
 
-// Delete a reservation
 exports.deleteReservation = async (req, res) => {
     try {
         const { reservationId } = req.params;
@@ -130,11 +124,12 @@ exports.deleteReservation = async (req, res) => {
         }
 
         const result = await getDB().collection("reservations").deleteOne({ _id: new ObjectId(reservationId) });
+
+
         if (result.deletedCount === 0) {
             return res.status(404).json({ error: "Reservation not found" });
         }
 
-        // Log reservation deletion
         const logEntry = {
             actorId: req.user?.id ? new ObjectId(req.user.id) : "system",
             actorType: req.user?.role || "system",
