@@ -2,44 +2,74 @@ const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 const bcrypt = require("bcrypt");
 
+/**
+ * Retrieve all users from the database.
+ */
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await getDB().collection("users").find().toArray();
         res.json(users);
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to fetch users" });
     }
 };
 
+/**
+ * Retrieve a specific user by ID.
+ */
 exports.getUserById = async (req, res) => {
     try {
         const userId = req.params.id;
-        if (!ObjectId.isValid(userId)) return res.status(400).json({ error: "Invalid ObjectId format" });
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
 
         const user = await getDB().collection("users").findOne({ _id: new ObjectId(userId) });
+
         if (!user) return res.status(404).json({ error: "User not found" });
 
         res.json(user);
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to fetch user" });
     }
 };
 
+/**
+ * Create a new user with validation and logging.
+ */
 exports.createUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
-        if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "Name, email, and password are required" });
+        }
 
         const db = getDB();
-        const existingUser = await db.collection("users").findOne({ email });
-        if (existingUser) return res.status(400).json({ error: "Email already registered" });
 
+        // 🔍 Check if email already exists
+        const existingUser = await db.collection("users").findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+
+        // 🔒 Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
+
+        const newUser = {
+            name,
+            email,
+            password: hashedPassword,
+            phoneNumber,
+            company,
+            createdAt: new Date(),
+        };
+
         const result = await db.collection("users").insertOne(newUser);
 
+        // 📝 Log the creation action
         await db.collection("logs").insertOne({
-            actorId: new ObjectId(req.user.id),
+            actorId: new ObjectId(req.user.id), // Who performed the action
             actorType: req.user.role,
             action: "USER_CREATED",
             details: { name, email, company },
@@ -47,22 +77,39 @@ exports.createUser = async (req, res) => {
         });
 
         res.status(201).json({ message: "User created", id: result.insertedId });
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to create user" });
     }
 };
 
+/**
+ * Update an existing user by ID with validation and logging.
+ */
 exports.updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        if (!ObjectId.isValid(userId)) return res.status(400).json({ error: "Invalid ObjectId format" });
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
 
         const updateData = { ...req.body };
-        if (updateData.password) updateData.password = await bcrypt.hash(updateData.password, 10);
 
-        const result = await getDB().collection("users").updateOne({ _id: new ObjectId(userId) }, { $set: updateData });
-        if (!result.modifiedCount) return res.status(404).json({ error: "User not found or no changes made" });
+        // 🔒 Hash password if it's being updated
+        if (updateData.password) {
+            updateData.password = await bcrypt.hash(updateData.password, 10);
+        }
 
+        const result = await getDB().collection("users").updateOne(
+            { _id: new ObjectId(userId) },
+            { $set: updateData }
+        );
+
+        if (!result.modifiedCount) {
+            return res.status(404).json({ error: "User not found or no changes made" });
+        }
+
+        // 📝 Log the update action
         await getDB().collection("logs").insertOne({
             actorId: new ObjectId(req.user.id),
             actorType: req.user.role,
@@ -72,19 +119,29 @@ exports.updateUser = async (req, res) => {
         });
 
         res.json({ message: "User updated" });
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to update user" });
     }
 };
 
+/**
+ * Delete a user by ID with logging.
+ */
 exports.deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        if (!ObjectId.isValid(userId)) return res.status(400).json({ error: "Invalid ObjectId format" });
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: "Invalid ObjectId format" });
+        }
 
         const result = await getDB().collection("users").deleteOne({ _id: new ObjectId(userId) });
-        if (!result.deletedCount) return res.status(404).json({ error: "User not found" });
 
+        if (!result.deletedCount) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // 📝 Log the deletion action
         await getDB().collection("logs").insertOne({
             actorId: new ObjectId(req.user.id),
             actorType: req.user.role,
@@ -94,7 +151,7 @@ exports.deleteUser = async (req, res) => {
         });
 
         res.json({ message: "User deleted" });
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to delete user" });
     }
 };

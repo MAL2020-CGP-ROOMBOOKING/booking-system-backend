@@ -6,7 +6,7 @@ exports.getAllAdmins = async (req, res) => {
     try {
         const admins = await getDB().collection("admins").find().toArray();
         res.json(admins);
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to fetch admins" });
     }
 };
@@ -16,7 +16,7 @@ exports.getAdminById = async (req, res) => {
         const admin = await getDB().collection("admins").findOne({ _id: new ObjectId(req.params.adminId) });
         if (!admin) return res.status(404).json({ error: "Admin not found" });
         res.json(admin);
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Failed to fetch admin" });
     }
 };
@@ -24,12 +24,24 @@ exports.getAdminById = async (req, res) => {
 exports.createAdmin = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
-        if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "Name, email, and password are required" });
+        }
 
         const db = getDB();
-        const existingAdmin = await db.collection("admins").findOne({ email });
-        if (existingAdmin) return res.status(400).json({ error: "Email already registered" });
 
+        // Extract actor information from token (who performed this action)
+        const actorId = req.user.id; // Extracted from JWT token middleware
+        const actorType = req.user.role; // Extracted from JWT token middleware
+
+        // Check if email already exists
+        const existingAdmin = await db.collection("admins").findOne({ email });
+        if (existingAdmin) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+
+        // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newAdmin = {
@@ -38,33 +50,48 @@ exports.createAdmin = async (req, res) => {
             password: hashedPassword,
             phoneNumber,
             company,
-            role: "admin",
+            role: "admin", // Assign the role automatically
             createdAt: new Date(),
         };
 
         const result = await db.collection("admins").insertOne(newAdmin);
-        await db.collection("logs").insertOne({
-            actorId: new ObjectId(req.user.id),
-            actorType: req.user.role,
+
+        // Log the action
+        const logEntry = {
+            actorId: new ObjectId(actorId), // Who performed the action
+            actorType, // Role of the user performing the action
             action: "ADMIN_CREATED",
-            details: { email, company, role: "admin" },
+            details: { email, company, role: "admin" }, // Capture key details
             timestamp: new Date(),
-        });
+        };
+
+        await db.collection("logs").insertOne(logEntry);
 
         res.status(201).json({ message: "Admin created", id: result.insertedId });
     } catch (err) {
-        res.status(500).json({ error: "Failed to create admin" });
+        res.status(500).json({ error: "Failed to create admin", details: err.message });
     }
 };
 
+
+
+
 exports.updateAdmin = async (req, res) => {
     try {
-        const adminId = new ObjectId(req.user.id);
-        const result = await getDB().collection("admins").updateOne({ _id: adminId }, { $set: req.body });
+        const db = getDB();
+        const adminId = new ObjectId(req.user.id); // Convert token ID to ObjectId
 
-        if (!result.modifiedCount) return res.status(404).json({ error: "Admin not found or no changes made" });
+        const result = await db.collection("admins").updateOne(
+            { _id: adminId }, // Use converted ObjectId
+            { $set: req.body }
+        );
 
-        await getDB().collection("logs").insertOne({
+        if (!result.modifiedCount) {
+            return res.status(404).json({ error: "Admin not found or no changes made" });
+        }
+
+        // Log the update action
+        await db.collection("logs").insertOne({
             actorId: adminId,
             actorType: req.user.role,
             action: "ADMIN_UPDATED",
@@ -73,19 +100,25 @@ exports.updateAdmin = async (req, res) => {
         });
 
         res.json({ message: "Admin updated" });
-    } catch {
+    } catch (err) {
+        console.error("Update Admin Error:", err);
         res.status(500).json({ error: "Failed to update admin" });
     }
 };
 
 exports.deleteAdmin = async (req, res) => {
     try {
-        const adminId = new ObjectId(req.user.id);
-        const result = await getDB().collection("admins").deleteOne({ _id: adminId });
+        const db = getDB();
+        const adminId = new ObjectId(req.user.id); // Convert token ID to ObjectId
 
-        if (!result.deletedCount) return res.status(404).json({ error: "Admin not found" });
+        const result = await db.collection("admins").deleteOne({ _id: adminId });
 
-        await getDB().collection("logs").insertOne({
+        if (!result.deletedCount) {
+            return res.status(404).json({ error: "Admin not found" });
+        }
+
+        // Log the deletion action
+        await db.collection("logs").insertOne({
             actorId: adminId,
             actorType: req.user.role,
             action: "ADMIN_DELETED",
@@ -94,7 +127,8 @@ exports.deleteAdmin = async (req, res) => {
         });
 
         res.json({ message: "Admin deleted" });
-    } catch {
+    } catch (err) {
+        console.error("Delete Admin Error:", err);
         res.status(500).json({ error: "Failed to delete admin" });
     }
 };

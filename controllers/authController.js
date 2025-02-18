@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: "Invalid email or password" });
         }
 
-
+        console.log("User found:", user); // Debugging
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
@@ -30,9 +30,10 @@ exports.login = async (req, res) => {
             role: user.role || "user" // Default to "user" if undefined
         };
 
+        console.log("Token Payload:", tokenPayload); // Debugging
 
         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
-            expiresIn: "24h",
+            expiresIn: "1h",
         });
 
         res.json({ message: "Login successful", token });
