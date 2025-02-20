@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { connectDB } = require("../config/db");
+const { connectDB, getDB } = require("../config/db");
 const { authenticateToken } = require("../middleware/authMiddleware");
 
 dotenv.config();
@@ -13,14 +13,30 @@ app.use(cors());
 
 // test
 
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     res.render('userCreate');
 });
 
-app.post('/userCreate', (req, res) => {
+app.post('/userCreate', async (req, res) => {
+    const { name, email } = req.body;
+    console.log(name, email);
     
+    const db = getDB();
+    const users = db.collection('users');
+
+    const doc = {
+        name: name,
+        email: email,
+    }
+
+    const result = await users.insertOne(doc);
+
+    console.log(result.insertedId)
+
+    res.render('userCreate');
 });
 
 // end test
