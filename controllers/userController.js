@@ -2,6 +2,14 @@ const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 const bcrypt = require("bcrypt");
 
+// test
+
+exports.postCreateUser = async (req, res) => {
+    
+};
+
+// end test
+
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await getDB().collection("users").find().toArray();
