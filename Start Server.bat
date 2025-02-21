@@ -13,3 +13,6 @@ timeout /t 5
 REM Start Node.js Server
 cd /d "%NODE_SERVER_PATH%"
 node server.js
+
+REM Keep the window open
+cmd /k
