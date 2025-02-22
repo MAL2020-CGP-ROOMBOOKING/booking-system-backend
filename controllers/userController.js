@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
-const bcrypt = require("bcrypt");
+const bcryptor = require("../modules/bcryptor");
 
 // test
 
@@ -42,7 +42,7 @@ exports.createUser = async (req, res) => {
         const existingUser = await db.collection("users").findOne({ email });
         if (existingUser) return res.status(400).json({ error: "Email already registered" });
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptor.hashPassword(password);
         const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
         const result = await db.collection("users").insertOne(newUser);
 
@@ -66,7 +66,7 @@ exports.updateUser = async (req, res) => {
         if (!ObjectId.isValid(userId)) return res.status(400).json({ error: "Invalid ObjectId format" });
 
         const updateData = { ...req.body };
-        if (updateData.password) updateData.password = await bcrypt.hash(updateData.password, 10);
+        if (updateData.password) updateData.password = await bcryptor.hashPassword(updateData.password);
 
         const result = await getDB().collection("users").updateOne({ _id: new ObjectId(userId) }, { $set: updateData });
         if (!result.modifiedCount) return res.status(404).json({ error: "User not found or no changes made" });

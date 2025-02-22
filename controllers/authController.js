@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { getDB } = require("../config/db");
-const bcrypt = require("bcrypt");
+const bcryptor = require("../modules/bcryptor");
 
 exports.login = async (req, res) => {
     try {
@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
 
 
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const passwordMatch = await bcryptor.verifyPassword(password, user.password);
         if (!passwordMatch) {
             return res.status(401).json({ error: "Invalid email or password" });
         }

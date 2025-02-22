@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
-const bcrypt = require("bcrypt");
+const bcryptor = require("../modules/bcryptor");
 
 exports.getAllAdmins = async (req, res) => {
     try {
@@ -30,7 +30,7 @@ exports.createAdmin = async (req, res) => {
         const existingAdmin = await db.collection("admins").findOne({ email });
         if (existingAdmin) return res.status(400).json({ error: "Email already registered" });
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptor.hashPassword(password);
 
         const newAdmin = {
             name,
