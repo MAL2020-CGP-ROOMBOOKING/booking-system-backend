@@ -12,28 +12,37 @@ app.use(cors());
 
 // test
 
+const bcryptor = require('./modules/bcryptor');
+
+// express.urlencoded() for html forms
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.render('userCreate');
 });
 
 app.post('/userCreate', async (req, res) => {
-    const { name, email } = req.body;
-    console.log(name, email);
+    const { name, email, password, phoneNumber, company } = req.body;
+    console.log(name, email, password, phoneNumber, company);
     
     const db = getDB();
     const users = db.collection('users');
 
+    const hashedPassword = await bcryptor.hashPassword(password);
+
     const doc = {
-        name: name,
-        email: email,
+        name,
+        email,
+        hashedPassword,
+        phoneNumber,
+        company,
     }
 
     const result = await users.insertOne(doc);
 
-    console.log(result.insertedId)
+    console.log(result.insertedId);
+    console.log(hashedPassword);
 
     res.render('userCreate');
 });

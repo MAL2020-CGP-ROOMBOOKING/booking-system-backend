@@ -5,7 +5,34 @@ const bcryptor = require("../modules/bcryptor");
 // test
 
 exports.postCreateUser = async (req, res) => {
-    
+    try {
+        const { name, email, password, phoneNumber, company } = req.body;
+        // if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
+        // required tag in html forms could maybe detect this
+
+        const db = getDB();
+
+        // check for existing user
+        const existingUser = await db.collection("users").findOne({ email });
+        if (existingUser) return res.status(400).json({ error: "Email already registered" });
+
+        // password hashing takes place here
+        const hashedPassword = await bcryptor.hashPassword(password);
+        const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
+        const result = await db.collection("users").insertOne(newUser);
+
+        await db.collection("logs").insertOne({
+            actorId: new ObjectId(req.user.id),
+            actorType: req.user.role,
+            action: "USER_CREATED",
+            details: { name, email, company },
+            timestamp: new Date(),
+        });
+
+        res.status(201).json({ message: "User created", id: result.insertedId });
+    } catch {
+
+    }
 };
 
 // end test
