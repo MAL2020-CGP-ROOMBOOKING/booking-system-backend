@@ -1,10 +1,9 @@
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const { connectDB, getDB } = require("./config/db");
 const { authenticateToken } = require("./middleware/authMiddleware");
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
