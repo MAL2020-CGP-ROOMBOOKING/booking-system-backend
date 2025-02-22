@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = require("../controllers/userController");
+const { getAllUsers, getUserById, createUser, updateUser, deleteUser, postCreateUser } = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -11,5 +11,7 @@ router.delete("/:id", deleteUser);
 
 router.get("/login", /* put controller for login here */);
 router.post("/login", /* put controller for login here */);
+
+router.post("/userCreate", postCreateUser);
 
 module.exports = router;

@@ -31,7 +31,7 @@ exports.postCreateUser = async (req, res) => {
 
         res.status(201).json({ message: "User created", id: result.insertedId });
     } catch {
-
+        res.status(500).json({ error: "Failed to create user" });
     }
 };
 

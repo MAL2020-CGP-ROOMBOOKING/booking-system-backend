@@ -13,6 +13,7 @@ app.use(cors());
 // test
 
 const bcryptor = require('./modules/bcryptor');
+const userRoutes = require('./routes/userRoutes');
 
 // express.urlencoded() for html forms
 app.use(express.urlencoded({ extended: true }));
@@ -22,7 +23,11 @@ app.get('/', async (req, res) => {
     res.render('userCreate');
 });
 
+app.use('/', userRoutes);
+
+/*
 app.post('/userCreate', async (req, res) => {
+
     const { name, email, password, phoneNumber, company } = req.body;
     console.log(name, email, password, phoneNumber, company);
     
@@ -46,11 +51,18 @@ app.post('/userCreate', async (req, res) => {
 
     res.render('userCreate');
 });
+*/
 
 // end test
 
+// CURRENT TASK
+//remove api prefix and test again
+
 connectDB().then(() => {
     const { authMiddleware } = require("./middleware/authMiddleware");
+
+    // User creation route without middleware
+    app.use("/api/users/userCreate", require("./routes/userRoutes"));  // No auth here
 
     app.use("/api/users", authMiddleware, require("./routes/userRoutes"));
     app.use("/api/admins", authMiddleware, require("./routes/adminRoutes"));
