@@ -2,17 +2,22 @@ const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 const bcryptor = require("../modules/bcryptor");
 
-// test
-
-exports.renderuserHome = async (req, res) => {
+exports.renderCreateUser = async (req, res) => {
     res.render('userCreate');
 };
 
 exports.postCreateUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
-        // if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
-        // required tag in html forms could maybe detect this
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                error: {
+                    name: !name ? "Name is required" : null,
+                    email: !email ? "Email is required" : null,
+                    password: !password ? "Password is required" : null
+                }
+            });
+        }
 
         const db = getDB();
 
@@ -24,11 +29,9 @@ exports.postCreateUser = async (req, res) => {
         const hashedPassword = await bcryptor.hashPassword(password);
         const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
         const result = await db.collection("users").insertOne(newUser);
-        
-        res.render('userCreate');
-        /*
+
         await db.collection("logs").insertOne({
-            actorId: new ObjectId(req.user.id),
+            actorId: new ObjectId.createFromTime(req.user.id),
             actorType: req.user.role,
             action: "USER_CREATED",
             details: { name, email, company },
@@ -36,13 +39,13 @@ exports.postCreateUser = async (req, res) => {
         });
 
         res.status(201).json({ message: "User created", id: result.insertedId });
-        */
+
+        res.render('userCreate');
+
     } catch {
         res.status(500).json({ error: "Failed to create user" });
     }
 };
-
-// end test
 
 exports.getAllUsers = async (req, res) => {
     try {
