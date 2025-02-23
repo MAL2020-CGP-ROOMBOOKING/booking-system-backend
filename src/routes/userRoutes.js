@@ -4,7 +4,8 @@ const { getAllUsers, getUserById, createUser, updateUser, deleteUser, postCreate
 const router = express.Router();
 
 router.get('/createUser', renderCreateUser);
-router.post("/createUser", postCreateUser);
+router.post('/createUser', postCreateUser);
+router.patch('/updateUser', updateUser);
 
 /*
 router.get("/", getAllUsers);

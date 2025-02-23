@@ -1,6 +1,10 @@
-const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 const bcryptor = require("../modules/bcryptor");
+const { ObjectId } = require("mongodb");
+
+exports.renderCreateAdmin = async (req, res) => {
+    res.render('createAdmin');
+};
 
 exports.getAllAdmins = async (req, res) => {
     try {
@@ -27,22 +31,22 @@ exports.createAdmin = async (req, res) => {
         if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
 
         const db = getDB();
+
         const existingAdmin = await db.collection("admins").findOne({ email });
         if (existingAdmin) return res.status(400).json({ error: "Email already registered" });
 
-        const hashedPassword = await bcryptor.hashPassword(password);
-
-        const newAdmin = {
+        // Hash password & insert data
+        const result = await db.collection("admins").insertOne({
             name,
             email,
-            password: hashedPassword,
+            password: await bcryptor.hashPassword(password),
             phoneNumber,
             company,
             role: "admin",
             createdAt: new Date(),
-        };
+        });
 
-        const result = await db.collection("admins").insertOne(newAdmin);
+        /*
         await db.collection("logs").insertOne({
             actorId: new ObjectId(req.user.id),
             actorType: req.user.role,
@@ -50,8 +54,10 @@ exports.createAdmin = async (req, res) => {
             details: { email, company, role: "admin" },
             timestamp: new Date(),
         });
+        */
 
         res.status(201).json({ message: "Admin created", id: result.insertedId });
+        res.render('createAdmin');
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
     }

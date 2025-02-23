@@ -1,6 +1,6 @@
-const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 const bcryptor = require("../modules/bcryptor");
+const { ObjectId } = require("mongodb");
 
 exports.renderCreateUser = async (req, res) => {
     res.render('createUser');
@@ -25,23 +25,27 @@ exports.postCreateUser = async (req, res) => {
         const existingUser = await db.collection("users").findOne({ email });
         if (existingUser) return res.status(400).json({ error: "Email already registered" });
 
-        // password hashing takes place here
-        const hashedPassword = await bcryptor.hashPassword(password);
-        const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
-        const result = await db.collection("users").insertOne(newUser);
+        // Hash password and insert data
+        const result = await db.collection("users").insertOne({
+            name,
+            email,
+            password: await bcryptor.hashPassword(password),
+            phoneNumber,
+            company,
+            role: "user",
+            createdAt: new Date(),
+        });
 
-        /*
+        // Log Action
         await db.collection("logs").insertOne({
-            actorId: new ObjectId.createFromTime(req.user.id),
-            actorType: req.user.role,
+            actorId: null,
+            actorType: "user",
             action: "USER_CREATED",
             details: { name, email, company },
             timestamp: new Date(),
         });
 
         res.status(201).json({ message: "User created", id: result.insertedId });
-        */
-
         res.render('createUser');
     } catch {
         res.status(500).json({ error: "Failed to create user" });
