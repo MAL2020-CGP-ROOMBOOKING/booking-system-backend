@@ -1,4 +1,4 @@
 MONGODB_DIR=.\MongoDB\bin
 DB_PATH=.\data\db
-NODE_SERVER_PATH=.\
+NODE_SERVER_PATH=.\src
 MONGO_URI=mongodb://127.0.0.1:27017

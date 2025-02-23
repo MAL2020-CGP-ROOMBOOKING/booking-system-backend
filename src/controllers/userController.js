@@ -30,6 +30,7 @@ exports.postCreateUser = async (req, res) => {
         const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
         const result = await db.collection("users").insertOne(newUser);
 
+        /*
         await db.collection("logs").insertOne({
             actorId: new ObjectId.createFromTime(req.user.id),
             actorType: req.user.role,
@@ -39,9 +40,9 @@ exports.postCreateUser = async (req, res) => {
         });
 
         res.status(201).json({ message: "User created", id: result.insertedId });
+        */
 
         res.render('userCreate');
-
     } catch {
         res.status(500).json({ error: "Failed to create user" });
     }

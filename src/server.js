@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { connectDB, getDB } = require("./config/db");
 const { authenticateToken } = require("./middleware/authMiddleware");
+const { get } = require("./routes/userRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.get('/', async (req, res) => {
 connectDB().then(() => {
     //const { authMiddleware } = require("./middleware/authMiddleware");
     // temp removal of authMiddleware
+    
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
     app.use("/rooms", require("./routes/roomRoutes"));
