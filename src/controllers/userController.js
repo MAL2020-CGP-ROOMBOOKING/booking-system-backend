@@ -3,7 +3,7 @@ const { getDB } = require("../config/db");
 const bcryptor = require("../modules/bcryptor");
 
 exports.renderCreateUser = async (req, res) => {
-    res.render('userCreate');
+    res.render('createUser');
 };
 
 exports.postCreateUser = async (req, res) => {
@@ -42,7 +42,7 @@ exports.postCreateUser = async (req, res) => {
         res.status(201).json({ message: "User created", id: result.insertedId });
         */
 
-        res.render('userCreate');
+        res.render('createUser');
     } catch {
         res.status(500).json({ error: "Failed to create user" });
     }

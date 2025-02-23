@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const { connectDB, getDB } = require("./config/db");
 const { authenticateToken } = require("./middleware/authMiddleware");
-const { get } = require("./routes/userRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
-    res.render('userHome');
+    res.render('homeUser');
 });
 
 connectDB().then(() => {
