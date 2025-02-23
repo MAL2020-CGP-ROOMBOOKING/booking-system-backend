@@ -4,6 +4,10 @@ const bcryptor = require("../modules/bcryptor");
 
 // test
 
+exports.renderuserHome = async (req, res) => {
+    res.render('userCreate');
+};
+
 exports.postCreateUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
@@ -20,7 +24,9 @@ exports.postCreateUser = async (req, res) => {
         const hashedPassword = await bcryptor.hashPassword(password);
         const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
         const result = await db.collection("users").insertOne(newUser);
-
+        
+        res.render('userCreate');
+        /*
         await db.collection("logs").insertOne({
             actorId: new ObjectId(req.user.id),
             actorType: req.user.role,
@@ -30,6 +36,7 @@ exports.postCreateUser = async (req, res) => {
         });
 
         res.status(201).json({ message: "User created", id: result.insertedId });
+        */
     } catch {
         res.status(500).json({ error: "Failed to create user" });
     }

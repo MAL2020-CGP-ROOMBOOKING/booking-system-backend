@@ -13,19 +13,20 @@ app.use(cors());
 // test
 
 const bcryptor = require('./modules/bcryptor');
-const userRoutes = require('./routes/userRoutes');
 
 // express.urlencoded() for html forms
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
+    res.render('userHome');
+});
+/*
+app.get('/userCreate', async (req, res) => {
     res.render('userCreate');
 });
 
-app.use('/', userRoutes);
 
-/*
 app.post('/userCreate', async (req, res) => {
 
     const { name, email, password, phoneNumber, company } = req.body;
@@ -59,20 +60,18 @@ app.post('/userCreate', async (req, res) => {
 //remove api prefix and test again
 
 connectDB().then(() => {
-    const { authMiddleware } = require("./middleware/authMiddleware");
+    //const { authMiddleware } = require("./middleware/authMiddleware");
 
-    // User creation route without middleware
-    app.use("/api/users/userCreate", require("./routes/userRoutes"));  // No auth here
-
-    app.use("/api/users", authMiddleware, require("./routes/userRoutes"));
-    app.use("/api/admins", authMiddleware, require("./routes/adminRoutes"));
-    app.use("/api/rooms", authMiddleware, require("./routes/roomRoutes"));
-    app.use("/api/feedback", authMiddleware, require("./routes/feedbackRoutes"));
-    app.use("/api/announcements", authMiddleware, require("./routes/announcementRoutes"));
-    app.use("/api/reservations", authMiddleware, require("./routes/reservationRoutes"));
-    app.use("/api/logs", authMiddleware, require("./routes/logRoutes"));
+    // temp removal of authMiddleware
+    app.use("/users", require("./routes/userRoutes"));
+    app.use("/admins", require("./routes/adminRoutes"));
+    app.use("/rooms", require("./routes/roomRoutes"));
+    app.use("/feedback", require("./routes/feedbackRoutes"));
+    app.use("/announcements", require("./routes/announcementRoutes"));
+    app.use("/reservations", require("./routes/reservationRoutes"));
+    app.use("/logs", require("./routes/logRoutes"));
     
-    app.use("/api/auth", require("./routes/authRoutes"));
+    app.use("/auth", require("./routes/authRoutes"));
     
 
     app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
