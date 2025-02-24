@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/createAdmin', renderCreateAdmin);
 router.post('/createAdmin', createAdmin);
+//patch for update
 
 /*
 router.get("/", getAllAdmins);

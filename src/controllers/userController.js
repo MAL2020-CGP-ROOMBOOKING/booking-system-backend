@@ -6,6 +6,10 @@ exports.renderCreateUser = async (req, res) => {
     res.render('createUser');
 };
 
+exports.renderLoginUser = async (req, res) => {
+    res.render('loginUser');
+};
+
 exports.postCreateUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
@@ -49,6 +53,37 @@ exports.postCreateUser = async (req, res) => {
         res.render('createUser');
     } catch {
         res.status(500).json({ error: "Failed to create user" });
+    }
+};
+
+exports.postLoginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const db = getDB();
+
+        const match = await db.collection("users").findOne({ email });
+
+        if(match) {
+            console.log('Match found!');
+            console.log('Email: ', match.email);
+            console.log('Password: ', match.password);
+
+            const passwordMatch = await bcryptor.verifyPassword(password, match.password);
+
+            if(passwordMatch) {
+                console.log('Password Correct!');
+            } else {
+                console.log('Password Incorrect!');
+            }
+
+            res.render('loginUser');
+        } else {
+            console.log('User not found...');
+            res.render('loginUser');
+        }
+    } catch {
+
     }
 };
 

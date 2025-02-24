@@ -1,11 +1,14 @@
 const express = require("express");
-const { getAllUsers, getUserById, createUser, updateUser, deleteUser, postCreateUser, renderCreateUser } = require("../controllers/userController");
+const { getAllUsers, getUserById, createUser, updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUser, postLoginUser } = require("../controllers/userController");
 
 const router = express.Router();
 
 router.get('/createUser', renderCreateUser);
 router.post('/createUser', postCreateUser);
 router.patch('/updateUser', updateUser);
+
+router.get('/loginUser', renderLoginUser);
+router.post('/loginUser', postLoginUser);
 
 /*
 router.get("/", getAllUsers);
