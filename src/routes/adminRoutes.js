@@ -1,10 +1,14 @@
 const express = require("express");
-const { getAllAdmins, getAdminById, createAdmin, updateAdmin, deleteAdmin, renderCreateAdmin } = require("../controllers/adminController");
+const { createAdmin, updateAdmin, deleteAdmin, renderCreateAdmin, renderLoginAdmin, postCreateAdmin, postLoginAdmin } = require("../controllers/adminController");
 
 const router = express.Router();
 
 router.get('/createAdmin', renderCreateAdmin);
-router.post('/createAdmin', createAdmin);
+router.post('/createAdmin', postCreateAdmin);
+
+router.get('/loginAdmin', renderLoginAdmin);
+router.post('/loginAdmin', postLoginAdmin);
+
 //patch for update
 
 /*

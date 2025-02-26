@@ -6,6 +6,10 @@ exports.renderCreateAdmin = async (req, res) => {
     res.render('createAdmin');
 };
 
+exports.renderLoginAdmin = async (req, res) => {
+    res.render('loginAdmin');
+};
+
 exports.getAllAdmins = async (req, res) => {
     try {
         const admins = await getDB().collection("admins").find().toArray();
@@ -25,7 +29,7 @@ exports.getAdminById = async (req, res) => {
     }
 };
 
-exports.createAdmin = async (req, res) => {
+exports.postCreateAdmin = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
         if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
@@ -60,6 +64,37 @@ exports.createAdmin = async (req, res) => {
         res.render('createAdmin');
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
+    }
+};
+
+exports.postLoginAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const db = getDB();
+
+        const match = await db.collection("admins").findOne({ email });
+
+        if(match) {
+            console.log('Match found!');
+            console.log('Email: ', match.email);
+            console.log('Password: ', match.password);
+
+            const passwordMatch = await bcryptor.verifyPassword(password, match.password);
+
+            if(passwordMatch) {
+                console.log('Password Correct!');
+            } else {
+                console.log('Password Incorrect!');
+            }
+
+            res.render('loginAdmin');
+        } else {
+            console.log('User not found...');
+            res.render('loginAdmin');
+        }
+    } catch {
+
     }
 };
 
