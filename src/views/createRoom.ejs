@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Room</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+    <body>
+
+        <nav class="topnav">
+            <h1>Create Room</h1>
+        </nav>
+        
+        <form action="/rooms/createRoom" method="post">
+            <h2>Welcome!</h2>
+            <input type="text" name="roomName" placeholder="Room Name" required><br><br>
+            <input type="text" name="description" placeholder="Description" required><br><br>
+            <input type="number" name="pax" placeholder="Pax" required><br><br>
+            <input type="submit" value="Create Room">
+        </form>
+            
+    </body>
+</html>

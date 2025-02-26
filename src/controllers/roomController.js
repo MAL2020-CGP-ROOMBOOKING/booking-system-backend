@@ -1,6 +1,10 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 
+exports.renderCreateRoom = async (req, res) => {
+    res.render('createRoom');
+}
+
 exports.getAllRooms = async (req, res) => {
     try {
         const rooms = await getDB().collection("rooms").find().toArray();
@@ -33,12 +37,14 @@ exports.getRoomById = async (req, res) => {
     }
 };
 
-exports.createRoom = async (req, res) => {
+exports.postCreateRoom = async (req, res) => {
     try {
+        /*
         if (!req.user?.id) {
             console.warn("Unauthorized access attempt to create a room.");
             return res.status(401).json({ error: "Unauthorized: User ID missing" });
         }
+        */
 
         const { roomName, description, pax } = req.body;
 
@@ -48,6 +54,7 @@ exports.createRoom = async (req, res) => {
         }
 
         const newRoom = { roomName, description, pax, createdAt: new Date() };
+
         const db = getDB();
         if (!db) {
             console.error("Database connection failed.");
@@ -60,10 +67,14 @@ exports.createRoom = async (req, res) => {
             return res.status(500).json({ error: "Room creation failed" });
         }
 
-        res.status(201).json({ message: "Room created", id: result.insertedId });
+        //res.status(201).json({ message: "Room created", id: result.insertedId });
+        res.render('createRoom');
+
     } catch (err) {
         console.error("Error creating room:", err.message);
-        res.status(500).json({ error: "Failed to create room", details: err.message });
+        
+        //res.status(500).json({ error: "Failed to create room", details: err.message });
+        res.render('createRoom');
     }
 };
 

@@ -53,7 +53,7 @@ exports.postCreateAdmin = async (req, res) => {
         /*
         await db.collection("logs").insertOne({
             actorId: new ObjectId(req.user.id),
-            actorType: req.user.role,
+            actorType: "admin",
             action: "ADMIN_CREATED",
             details: { email, company, role: "admin" },
             timestamp: new Date(),

@@ -17,8 +17,10 @@ app.get('/', async (req, res) => {
 });
 
 connectDB().then(() => {
-    //const { authMiddleware } = require("./middleware/authMiddleware");
+    // const { authMiddleware } = require("./middleware/authMiddleware");
     // temp removal of authMiddleware
+
+    // research how to do something similar to transaction in MSSQL
     
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
