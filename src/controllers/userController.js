@@ -13,6 +13,7 @@ exports.renderLoginUser = async (req, res) => {
 exports.postCreateUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
+        
         if (!name || !email || !password) {
             return res.status(400).json({
                 error: {

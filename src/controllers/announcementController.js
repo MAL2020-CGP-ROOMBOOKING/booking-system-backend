@@ -1,5 +1,27 @@
-const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
+const { ObjectId } = require("mongodb");
+
+exports.renderCreateAnnouncement = async (req, res) => {
+    res.render('createAnnouncement');
+};
+
+exports.postCreateAnnouncement = async (req, res) => {
+    try {
+        const {title, body} = req.body;
+
+        const db = getDB();
+
+        await db.collection("announcements").insertOne({
+            title,
+            body,
+            time: new Date(),
+        });
+
+        res.render('createAnnouncement');
+    } catch {
+
+    }
+};
 
 exports.getAllAnnouncements = async (req, res) => {
     try {
