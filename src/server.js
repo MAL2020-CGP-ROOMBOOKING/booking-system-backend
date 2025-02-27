@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
-    res.render('homeUser');
+    res.render('user-dashboard');
 });
 
 connectDB().then(() => {

@@ -3,11 +3,11 @@ const bcryptor = require("../modules/bcryptor");
 const { ObjectId } = require("mongodb");
 
 exports.renderCreateAdmin = async (req, res) => {
-    res.render('createAdmin');
+    res.render('admin-create');
 };
 
 exports.renderLoginAdmin = async (req, res) => {
-    res.render('loginAdmin');
+    res.render('admin-login');
 };
 
 exports.getAllAdmins = async (req, res) => {
@@ -61,7 +61,7 @@ exports.postCreateAdmin = async (req, res) => {
         */
 
         res.status(201).json({ message: "Admin created", id: result.insertedId });
-        res.render('createAdmin');
+        res.render('admin-create');
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
     }
@@ -88,10 +88,10 @@ exports.postLoginAdmin = async (req, res) => {
                 console.log('Password Incorrect!');
             }
 
-            res.render('loginAdmin');
+            res.render('admin-login');
         } else {
             console.log('User not found...');
-            res.render('loginAdmin');
+            res.render('admin-login');
         }
     } catch {
 

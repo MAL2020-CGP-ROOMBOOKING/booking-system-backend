@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 
 exports.renderCreateRoom = async (req, res) => {
-    res.render('createRoom');
+    res.render('room-create');
 }
 
 exports.getAllRooms = async (req, res) => {
@@ -68,13 +68,13 @@ exports.postCreateRoom = async (req, res) => {
         }
 
         //res.status(201).json({ message: "Room created", id: result.insertedId });
-        res.render('createRoom');
+        res.render('room-create');
 
     } catch (err) {
         console.error("Error creating room:", err.message);
         
         //res.status(500).json({ error: "Failed to create room", details: err.message });
-        res.render('createRoom');
+        res.render('room-create');
     }
 };
 

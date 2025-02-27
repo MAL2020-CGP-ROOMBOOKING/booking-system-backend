@@ -3,11 +3,11 @@ const bcryptor = require("../modules/bcryptor");
 const { ObjectId } = require("mongodb");
 
 exports.renderCreateUser = async (req, res) => {
-    res.render('createUser');
+    res.render('user-create');
 };
 
 exports.renderLoginUser = async (req, res) => {
-    res.render('loginUser');
+    res.render('user-login');
 };
 
 exports.postCreateUser = async (req, res) => {
