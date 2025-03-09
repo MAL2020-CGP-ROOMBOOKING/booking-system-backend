@@ -2,17 +2,27 @@ require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
 // const cors = require("cors");
-const { connectDB, getDB } = require("./config/db");
+const { connectDB, client } = require("./config/db");
 const { authenticateToken } = require("./middleware/authMiddleware");
 const MongoStore = require("connect-mongo")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+/* Middleware */
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
+app.use(session({
+    store: MongoStore.create({client, dbName: process.env.DB_NAME}),
+    secret: 'discombobulated',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true } //later learn more
+}));
 
 app.get('/', async (req, res) => {
     res.render('landing', {user : req.session.user || null});
@@ -33,15 +43,6 @@ connectDB().then(() => {
     app.use("/logs", require("./routes/logRoutes"));
     
     app.use("/auth", require("./routes/authRoutes"));
-
-    db = getDB();
-    app.use(session({
-        store: MongoStore.create({client: db, dbName: db.databaseName}),
-        secret: 'the456Ship123Campus',
-        resave: false,
-        saveUninitialized: false,
-        cookie: { secure: true }
-    }));
 
     app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 });
