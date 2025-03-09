@@ -10,6 +10,10 @@ exports.renderLoginUser = async (req, res) => {
     res.render('user-login');
 };
 
+exports.renderDashboard = async (req, res) => {
+    res.render('user/dashboard', {user : req.session.user});
+};
+
 exports.postCreateUser = async (req, res) => {
     try {
         const { name, email, password, phoneNumber, company } = req.body;
@@ -74,14 +78,13 @@ exports.postLoginUser = async (req, res) => {
 
             if(passwordMatch) {
                 console.log('Password Correct!');
+                console.log(match.role);
             } else {
                 console.log('Password Incorrect!');
             }
 
-            res.render('loginUser');
         } else {
             console.log('User not found...');
-            res.render('loginUser');
         }
     } catch {
 

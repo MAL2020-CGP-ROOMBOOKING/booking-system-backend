@@ -2,7 +2,7 @@ const { getDB } = require("../config/db");
 const { ObjectId } = require("mongodb");
 
 exports.renderCreateAnnouncement = async (req, res) => {
-    res.render('announcement-create');
+    res.render('admin/create-announcement');
 };
 
 exports.postCreateAnnouncement = async (req, res) => {
@@ -17,7 +17,7 @@ exports.postCreateAnnouncement = async (req, res) => {
             time: new Date(),
         });
 
-        res.render('announcement-create');
+        res.render('admin/create-announcement');
     } catch {
 
     }

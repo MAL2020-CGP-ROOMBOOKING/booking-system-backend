@@ -18,6 +18,4 @@ router.put("/:id", updateUser); can use Patch instead
 router.delete("/:id", deleteUser);
 */
 
-// router.get("/login", /* put controller for login here */);
-// router.post("/login", /* put controller for login here */);
 module.exports = router;
