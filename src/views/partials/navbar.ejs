@@ -2,25 +2,32 @@
     <% if (!user) { %>
         <!-- Guest -->
         <span>TSC Room Booking</span>
-        <a href="/">Home</a>
-        <a href="/users/loginUser">Login</a>
-        <a href="/users/createUser">Register</a>
+        <div>
+            <a href="/">Home</a>
+            <a href="/users/loginUser">Login</a>
+            <a href="/users/createUser">Register</a>
+        </div>
 
     <% } else if (user.role === 'admin') { %>
         <span>Admin Dashboard</span>
-        <a href="">Dashboard</a>
-        <a href="">Bookings</a>
-        <a href="">Users</a>
-        <a href="">Rooms</a>
-        <a href="">Feedback</a>
-        <a href="">Announcement</a>
-        <a href="">Logout</a>
+        <div>
+            <a href="">Dashboard</a>
+            <a href="">Bookings</a>
+            <a href="">Users</a>
+            <a href="">Rooms</a>
+            <a href="">Feedback</a>
+            <a href="">Announcement</a>
+            <a href="">Logout</a>
+        </div>
+        
 
     <% } else if (user.role === 'user') { %>
         <span>TSC Room Booking</span>
-        <a href="">Dashboard</a>
-        <a href="">Bookings</a>
-        <a href="">Feedback</a>
-        <a href="">Logout</a>
+        <div>
+            <a href="">Dashboard</a>
+            <a href="">Bookings</a>
+            <a href="">Feedback</a>
+            <a href="">Logout</a>
+        </div>
     <% } %>
 </nav>

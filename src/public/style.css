@@ -13,8 +13,23 @@ body {
     justify-content: space-between;
 }
 
-.navbar a {
-    font-size: 1rem;
+.navbar span {
+    font-size: 1.5rem;
     color: white;
+}
+
+.navbar div {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar a {
+    font-size: 1.2rem;
+    color: #989D9E;
     text-decoration: none;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #BDC8C9;
 }
