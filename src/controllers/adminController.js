@@ -84,11 +84,11 @@ exports.postLoginAdmin = async (req, res) => {
 
             if(passwordMatch) {
                 console.log('Password Correct!');
+                res.render('user/dashboard', {user: match});
             } else {
                 console.log('Password Incorrect!');
+                res.render('admin-login');
             }
-
-            res.render('admin-login');
         } else {
             console.log('User not found...');
             res.render('admin-login');

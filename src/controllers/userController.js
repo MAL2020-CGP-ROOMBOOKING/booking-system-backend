@@ -79,6 +79,7 @@ exports.postLoginUser = async (req, res) => {
             if(passwordMatch) {
                 console.log('Password Correct!');
                 console.log(match.role);
+                res.render('user/dashboard', {user: match});
             } else {
                 console.log('Password Incorrect!');
             }
