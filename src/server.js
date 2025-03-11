@@ -18,11 +18,11 @@ app.use(session({
     secret: 'discoKingCave1111',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true } //later learn more
+    cookie: { secure: false } //later learn more
 }));
 
 app.get('/', async (req, res) => {
-    res.render('landing', {user : req.session.user || null});
+    res.render('landing', {user: null});
 });
 
 connectDB().then(() => {

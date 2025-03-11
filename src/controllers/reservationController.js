@@ -1,6 +1,10 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
 
+exports.renderCreateReservation = async (req, res) => {
+    res.render('user/create-reservation', {currentPage: 'bookings'});
+};
+
 exports.getAllReservations = async (req, res) => {
     try {
         const reservations = await getDB().collection("reservations").find().toArray();
@@ -31,23 +35,26 @@ exports.getReservationById = async (req, res) => {
 
 exports.createReservation = async (req, res) => {
     try {
-        const { userId, roomId, reserveDate, reserveTime, status, adminId } = req.body;
+        const { reserveDate, startTime, endTime } = req.body;
 
-        if (!userId || !roomId || !reserveDate || !reserveTime) {
+        if (!reserveDate || !startTime || !endTime) {
             return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
         }
 
+        /*
         if (!ObjectId.isValid(userId) || !ObjectId.isValid(roomId)) {
             return res.status(400).json({ error: "Invalid User ID or Room ID format" });
         }
+        */
 
         const newReservation = {
-            userId: new ObjectId(userId),
-            roomId: new ObjectId(roomId),
+            userId: req.session.user._id,
+            roomId: "temp",
             date: new Date(reserveDate),
-            time: reserveTime.trim(),
-            status: status || "pending",
-            adminId: adminId ? new ObjectId(adminId) : null,
+            startTime,
+            endTime,
+            status: "Pending",
+            adminId: null,
             createdAt: new Date(),
         };
 
@@ -59,10 +66,10 @@ exports.createReservation = async (req, res) => {
         }
 
         const logEntry = {
-            actorId: new ObjectId(userId),
-            actorType: "USER",
+            actorId: req.session.user._id,
+            actorType: req.session.user.role,
             action: "RESERVATION_CREATED",
-            details: { reservationId: result.insertedId, roomId, date: reserveDate, time: reserveTime },
+            details: { reservationId: result.insertedId, roomId: result.roomId, date: reserveDate }, //add startTime and endTime
             timestamp: new Date(),
         };
         await getDB().collection("logs").insertOne(logEntry);

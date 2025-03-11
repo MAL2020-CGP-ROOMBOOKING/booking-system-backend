@@ -1,9 +1,8 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
+    color: #212529;
     margin: 0;
+    padding: 0;
 }
 
 .navbar {
@@ -12,24 +11,32 @@ body {
     padding: 1.1rem;
     justify-content: space-between;
 }
-
 .navbar span {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: white;
 }
-
 .navbar div {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.6rem;
 }
-
 .navbar a {
     font-size: 1.2rem;
     color: #989D9E;
     text-decoration: none;
     transition: 0.3s;
 }
+.navbar a.active, .navbar a:hover {
+    color: #DAE5E5;
+}
 
-.navbar a:hover {
-    color: #BDC8C9;
+.landing-header {
+    background-image: url('wp-ship.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }

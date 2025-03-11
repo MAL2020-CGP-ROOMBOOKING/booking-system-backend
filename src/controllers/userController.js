@@ -11,7 +11,7 @@ exports.renderLoginUser = async (req, res) => {
 };
 
 exports.renderDashboard = async (req, res) => {
-    res.render('user/dashboard', {user : req.session.user});
+    res.render('user/dashboard', {currentPage: 'dashboard', user : req.session.user});
 };
 
 exports.postCreateUser = async (req, res) => {
@@ -70,20 +70,21 @@ exports.postLoginUser = async (req, res) => {
         const match = await db.collection("users").findOne({ email });
 
         if(match) {
-            console.log('Match found!');
-            console.log('Email: ', match.email);
-            console.log('Password: ', match.password);
-
             const passwordMatch = await bcryptor.verifyPassword(password, match.password);
 
             if(passwordMatch) {
                 console.log('Password Correct!');
-                console.log(match.role);
-                res.render('user/dashboard', {user: match});
+                req.session.user = {
+                    _id: match._id,
+                    name: match.name,
+                    email: match.email,
+                    role: match.role
+                };
+                console.log(req.session.user);
+                res.render('user/dashboard', {currentPage: 'dashboard', user: req.session.user});
             } else {
                 console.log('Password Incorrect!');
             }
-
         } else {
             console.log('User not found...');
         }

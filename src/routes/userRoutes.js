@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllUsers, getUserById, createUser, updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUser, postLoginUser } = require("../controllers/userController");
+const { updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUser, postLoginUser, renderDashboard } = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ router.patch('/updateUser', updateUser);
 router.get('/loginUser', renderLoginUser);
 router.post('/loginUser', postLoginUser);
 
+router.get('/dashboard', renderDashboard);
 /*
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
