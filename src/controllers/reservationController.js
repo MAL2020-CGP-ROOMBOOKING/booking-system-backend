@@ -69,7 +69,12 @@ exports.createReservation = async (req, res) => {
             actorId: req.session.user._id,
             actorType: req.session.user.role,
             action: "RESERVATION_CREATED",
-            details: { reservationId: result.insertedId, roomId: result.roomId, date: reserveDate }, //add startTime and endTime
+            details: {
+                reservationId: result.insertedId,
+                roomId: result.roomId,
+                date: reserveDate,
+                startTime,
+                endTime, },
             timestamp: new Date(),
         };
         await getDB().collection("logs").insertOne(logEntry);

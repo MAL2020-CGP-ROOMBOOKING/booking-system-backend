@@ -38,5 +38,21 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     text-align: center;
+}
+
+.landing-header a {
+    background-color: #212529;
+    border-radius: 12px;
+    cursor: pointer;
+    width: fit-content;
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    transition: 0.3s;
+}
+
+.landing-header a:hover {
+    background-color: #33393F;
 }

@@ -29,7 +29,7 @@ connectDB().then(() => {
     // const { authMiddleware } = require("./middleware/authMiddleware");
     // temp removal of authMiddleware
 
-    // research how to do something similar to transaction in MSSQL
+    // research how to do something similar to transaction in MSSQL (mongo session)
     
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
