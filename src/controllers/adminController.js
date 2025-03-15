@@ -50,18 +50,18 @@ exports.postCreateAdmin = async (req, res) => {
             createdAt: new Date(),
         });
 
-        /*
+        // Log
         await db.collection("logs").insertOne({
-            actorId: new ObjectId(req.user.id),
+            actorId: result.insertedId,
             actorType: "admin",
             action: "ADMIN_CREATED",
-            details: { email, company, role: "admin" },
+            details: { name, email, company, role: "admin" },
             timestamp: new Date(),
         });
-        */
-
+        
         res.status(201).json({ message: "Admin created", id: result.insertedId });
         res.render('admin-create');
+
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
     }
@@ -83,8 +83,16 @@ exports.postLoginAdmin = async (req, res) => {
             const passwordMatch = await bcryptor.verifyPassword(password, match.password);
 
             if(passwordMatch) {
+                
                 console.log('Password Correct!');
+                req.session.user = {
+                    _id: match._id,
+                    name: match.name,
+                    email: match.email,
+                    role: match.role
+                };
                 res.render('user/dashboard', {user: match});
+                
             } else {
                 console.log('Password Incorrect!');
                 res.render('admin-login');

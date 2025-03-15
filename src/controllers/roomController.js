@@ -67,14 +67,25 @@ exports.postCreateRoom = async (req, res) => {
             return res.status(500).json({ error: "Room creation failed" });
         }
 
+        console.log("session user and id", req.session.user._id, req.session.user.role);
+
+        // Log Action
+        await db.collection("logs").insertOne({
+            actorId: req.session.user._id,
+            actorType: "admin",
+            action: "ROOM_CREATED",
+            details: { roomName, description, pax },
+            timestamp: new Date(),
+        });
+
         //res.status(201).json({ message: "Room created", id: result.insertedId });
-        res.render('create-room');
+        res.render('admin/create-room');
 
     } catch (err) {
         console.error("Error creating room:", err.message);
         
         //res.status(500).json({ error: "Failed to create room", details: err.message });
-        res.render('create-room');
+        res.render('admin/create-room');
     }
 };
 

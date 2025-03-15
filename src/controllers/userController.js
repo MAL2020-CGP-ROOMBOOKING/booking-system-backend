@@ -47,10 +47,10 @@ exports.postCreateUser = async (req, res) => {
 
         // Log Action
         await db.collection("logs").insertOne({
-            actorId: null,
+            actorId: result.insertedId,
             actorType: "user",
             action: "USER_CREATED",
-            details: { name, email, company },
+            details: { name, email, company, role: "user" },
             timestamp: new Date(),
         });
 

@@ -39,7 +39,7 @@ connectDB().then(() => {
     app.use("/reservations", require("./routes/reservationRoutes"));
     app.use("/logs", require("./routes/logRoutes"));
     
-    app.use("/auth", require("./routes/authRoutes"));
+    // app.use("/auth", require("./routes/authRoutes"));
 
     app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 });

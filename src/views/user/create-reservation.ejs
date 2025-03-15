@@ -11,22 +11,16 @@
         </nav>
         
         <form action="/reservations/createReservation" method="post">
-            <h2>Welcome!</h2>
+
+            <h2>Create Reservation</h2>
+
+            <!-- Show selected room details -->
+
             <input type="date" name="reserveDate" required><br><br>
 
-            <select name="startTime" id="startTime" required>
-                <option value="8:30">8:30</option>
-                <option value="9:00">9:00</option>
-                <option value="9:30">9:30</option>
-                <option value="10:00">10:00</option>
-              </select>
+            <%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %>
 
-              <select name="endTime" id="endTime" required>
-                <option value="8:30">8:30</option>
-                <option value="9:00">9:00</option>
-                <option value="9:30">9:30</option>
-                <option value="10:00">10:00</option>
-              </select>
+            <%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %>
 
             <input type="submit" value="Reserve">
         </form>
