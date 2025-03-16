@@ -3,9 +3,9 @@
         <!-- Guest -->
         <span>TSC Room Booking</span>
         <div>
-            <a href="/">Home</a>
-            <a href="/users/login">Login</a>
-            <a href="/users/register">Register</a>
+            <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a>
+            <a href="/auth/login" class="<%= currentPage === 'login' ? 'active' : '' %>">Login</a>
+            <a href="/">Contact Us</a>
         </div>
 
     <% } else if (user.role === 'admin') { %>

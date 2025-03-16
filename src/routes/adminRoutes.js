@@ -1,5 +1,5 @@
 const express = require("express");
-const { updateAdmin, deleteAdmin, renderCreateAdmin, renderLoginAdmin, postCreateAdmin, postLoginAdmin } = require("../controllers/adminController");
+const { updateAdmin, deleteAdmin, renderCreateAdmin, renderDashboard, postCreateAdmin } = require("../controllers/adminController");
 
 const router = express.Router();
 
@@ -7,14 +7,12 @@ const router = express.Router();
 router.get('/register', renderCreateAdmin);
 router.post('/register', postCreateAdmin);
 
-router.get('/login', renderLoginAdmin);
-router.post('/login', postLoginAdmin);
+// router.get('/login', renderLoginAdmin);
+// router.post('/login', postLoginAdmin);
 
 //patch for update
 
-// Room
-// router.get('/createRoom', renderCreateRoom);
-// router.post('/createRoom', postCreateRoom);
+router.get('/dashboard', renderDashboard);
 
 /*
 router.get("/", getAllAdmins);

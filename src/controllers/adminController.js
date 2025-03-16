@@ -10,6 +10,10 @@ exports.renderLoginAdmin = async (req, res) => {
     res.render('admin-login');
 };
 
+exports.renderDashboard = async (req, res) => {
+    res.render('admin/dashboard', {currentPage: 'dashboard', user : req.session.user});
+};
+
 exports.getAllAdmins = async (req, res) => {
     try {
         const admins = await getDB().collection("admins").find().toArray();
@@ -91,7 +95,7 @@ exports.postLoginAdmin = async (req, res) => {
                     email: match.email,
                     role: match.role
                 };
-                res.render('user/dashboard', {user: match});
+                res.render('admin/dashboard', {user: match});
                 
             } else {
                 console.log('Password Incorrect!');

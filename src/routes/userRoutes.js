@@ -8,8 +8,8 @@ router.post('/register', postCreateUser);
 
 // router.patch('/update', updateUser);
 
-router.get('/login', renderLoginUser);
-router.post('/login', postLoginUser);
+// router.get('/login', renderLoginUser);
+// router.post('/login', postLoginUser);
 
 router.get('/dashboard', renderDashboard);
 /*

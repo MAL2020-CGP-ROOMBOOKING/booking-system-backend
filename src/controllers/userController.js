@@ -6,9 +6,11 @@ exports.renderCreateUser = async (req, res) => {
     res.render('user-create');
 };
 
+/*
 exports.renderLoginUser = async (req, res) => {
-    res.render('user-login');
+    res.render('user-login', {currentPage: 'login', user : null});
 };
+*/
 
 exports.renderDashboard = async (req, res) => {
     res.render('user/dashboard', {currentPage: 'dashboard', user : req.session.user});
@@ -80,7 +82,9 @@ exports.postLoginUser = async (req, res) => {
                     email: match.email,
                     role: match.role
                 };
+
                 console.log(req.session.user);
+                
                 res.render('user/dashboard', {currentPage: 'dashboard', user: req.session.user});
             } else {
                 console.log('Password Incorrect!');
