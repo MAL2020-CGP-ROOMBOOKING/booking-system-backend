@@ -3,12 +3,13 @@ const { updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUse
 
 const router = express.Router();
 
-router.get('/createUser', renderCreateUser);
-router.post('/createUser', postCreateUser);
-router.patch('/updateUser', updateUser);
+router.get('/register', renderCreateUser);
+router.post('/register', postCreateUser);
 
-router.get('/loginUser', renderLoginUser);
-router.post('/loginUser', postLoginUser);
+// router.patch('/update', updateUser);
+
+router.get('/login', renderLoginUser);
+router.post('/login', postLoginUser);
 
 router.get('/dashboard', renderDashboard);
 /*

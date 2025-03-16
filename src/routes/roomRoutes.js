@@ -3,8 +3,8 @@ const { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom, postCreate
 
 const router = express.Router();
 
-router.get('/createRoom', renderCreateRoom);
-router.post('/createRoom', postCreateRoom);
+router.get('/create', renderCreateRoom);
+router.post('/create', postCreateRoom);
 
 /*
 router.get("/", getAllRooms);

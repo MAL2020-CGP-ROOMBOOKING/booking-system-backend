@@ -3,8 +3,8 @@ const { getAllAnnouncements, getAnnouncementById, createAnnouncement, updateAnno
 
 const router = express.Router();
 
-router.get('/createAnnouncement', renderCreateAnnouncement);
-router.post('/createAnnouncement', postCreateAnnouncement);
+router.get('/create', renderCreateAnnouncement);
+router.post('/create', postCreateAnnouncement);
 
 
 /*

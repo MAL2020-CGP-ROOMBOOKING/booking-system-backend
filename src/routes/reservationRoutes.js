@@ -3,9 +3,9 @@ const { getAllReservations, getReservationById, createReservation, updateReserva
 
 const router = express.Router();
 
-router.get('/createReservation', renderCreateReservation);
+router.get('/create', renderCreateReservation);
 
-router.post('/createReservation', createReservation)
+router.post('/create', createReservation)
 
 /*
 router.get("/", getAllReservations);

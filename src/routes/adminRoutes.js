@@ -1,21 +1,20 @@
 const express = require("express");
 const { updateAdmin, deleteAdmin, renderCreateAdmin, renderLoginAdmin, postCreateAdmin, postLoginAdmin } = require("../controllers/adminController");
-const { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom, postCreateRoom, renderCreateRoom } = require("../controllers/roomController");
 
 const router = express.Router();
 
 // Admin
-router.get('/createAdmin', renderCreateAdmin);
-router.post('/createAdmin', postCreateAdmin);
+router.get('/register', renderCreateAdmin);
+router.post('/register', postCreateAdmin);
 
-router.get('/loginAdmin', renderLoginAdmin);
-router.post('/loginAdmin', postLoginAdmin);
+router.get('/login', renderLoginAdmin);
+router.post('/login', postLoginAdmin);
 
 //patch for update
 
 // Room
-router.get('/createRoom', renderCreateRoom);
-router.post('/createRoom', postCreateRoom);
+// router.get('/createRoom', renderCreateRoom);
+// router.post('/createRoom', postCreateRoom);
 
 /*
 router.get("/", getAllAdmins);

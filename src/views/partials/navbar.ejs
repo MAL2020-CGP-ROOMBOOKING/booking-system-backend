@@ -4,8 +4,8 @@
         <span>TSC Room Booking</span>
         <div>
             <a href="/">Home</a>
-            <a href="/users/loginUser">Login</a>
-            <a href="/users/createUser">Register</a>
+            <a href="/users/login">Login</a>
+            <a href="/users/register">Register</a>
         </div>
 
     <% } else if (user.role === 'admin') { %>
@@ -25,7 +25,7 @@
         <span>TSC Room Booking</span>
         <div>
             <a href="/users/dashboard" class="<%= currentPage === 'dashboard' ? 'active' : '' %>">Dashboard</a>
-            <a href="/reservations/createReservation" class="<%= currentPage === 'bookings' ? 'active' : '' %>">Bookings</a>
+            <a href="/reservations/create" class="<%= currentPage === 'bookings' ? 'active' : '' %>">Bookings</a>
             <a href="">Feedback</a>
             <a href="">Logout</a>
         </div>
