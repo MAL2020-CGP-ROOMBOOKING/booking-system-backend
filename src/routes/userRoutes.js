@@ -8,14 +8,10 @@ router.post('/register', postCreateUser);
 
 // router.patch('/update', updateUser);
 
-// router.get('/login', renderLoginUser);
-// router.post('/login', postLoginUser);
-
 router.get('/dashboard', renderDashboard);
 /*
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
-router.post("/", createUser);
 router.put("/:id", updateUser); can use Patch instead
 router.delete("/:id", deleteUser);
 */

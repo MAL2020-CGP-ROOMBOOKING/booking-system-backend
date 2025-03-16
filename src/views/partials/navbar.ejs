@@ -11,7 +11,7 @@
     <% } else if (user.role === 'admin') { %>
         <span>Admin Dashboard</span>
         <div>
-            <a href="/admins/dashboard">Dashboard</a>
+            <a href="/admins/dashboard" class="<%= currentPage === 'dashboard' ? 'active' : '' %>">Dashboard</a>
             <a href="">Bookings</a>
             <a href="">Users</a>
             <a href="">Rooms</a>

@@ -6,12 +6,6 @@ exports.renderCreateUser = async (req, res) => {
     res.render('user-create');
 };
 
-/*
-exports.renderLoginUser = async (req, res) => {
-    res.render('user-login', {currentPage: 'login', user : null});
-};
-*/
-
 exports.renderDashboard = async (req, res) => {
     res.render('user/dashboard', {currentPage: 'dashboard', user : req.session.user});
 };
@@ -63,40 +57,6 @@ exports.postCreateUser = async (req, res) => {
     }
 };
 
-exports.postLoginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const db = getDB();
-
-        const match = await db.collection("users").findOne({ email });
-
-        if(match) {
-            const passwordMatch = await bcryptor.verifyPassword(password, match.password);
-
-            if(passwordMatch) {
-                console.log('Password Correct!');
-                req.session.user = {
-                    _id: match._id,
-                    name: match.name,
-                    email: match.email,
-                    role: match.role
-                };
-
-                console.log(req.session.user);
-                
-                res.render('user/dashboard', {currentPage: 'dashboard', user: req.session.user});
-            } else {
-                console.log('Password Incorrect!');
-            }
-        } else {
-            console.log('User not found...');
-        }
-    } catch {
-
-    }
-};
-
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await getDB().collection("users").find().toArray();
@@ -117,33 +77,6 @@ exports.getUserById = async (req, res) => {
         res.json(user);
     } catch {
         res.status(500).json({ error: "Failed to fetch user" });
-    }
-};
-
-exports.createUser = async (req, res) => {
-    try {
-        const { name, email, password, phoneNumber, company } = req.body;
-        if (!name || !email || !password) return res.status(400).json({ error: "Name, email, and password are required" });
-
-        const db = getDB();
-        const existingUser = await db.collection("users").findOne({ email });
-        if (existingUser) return res.status(400).json({ error: "Email already registered" });
-
-        const hashedPassword = await bcryptor.hashPassword(password);
-        const newUser = { name, email, password: hashedPassword, phoneNumber, company, createdAt: new Date() };
-        const result = await db.collection("users").insertOne(newUser);
-
-        await db.collection("logs").insertOne({
-            actorId: new ObjectId(req.user.id),
-            actorType: req.user.role,
-            action: "USER_CREATED",
-            details: { name, email, company },
-            timestamp: new Date(),
-        });
-
-        res.status(201).json({ message: "User created", id: result.insertedId });
-    } catch {
-        res.status(500).json({ error: "Failed to create user" });
     }
 };
 

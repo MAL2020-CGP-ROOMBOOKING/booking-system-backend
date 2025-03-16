@@ -41,7 +41,6 @@
     align-items: center;
     text-align: center;
 }
-
 .landing-header a {
     background-color: #212529;
     border-radius: 12px;
@@ -52,7 +51,50 @@
     padding: 1rem;
     transition: 0.3s;
 }
-
 .landing-header a:hover {
     background-color: #33393F;
+}
+
+.account-main {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+.account-form {
+    border: 1px solid #D2D2D2;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 600px;
+    background-color: white;
+    box-shadow: 0px 5px 10px #999999;
+}
+.account-form h1 {
+    align-self: center;
+    text-align: center;
+}
+.account-form label {
+    display: inline-block;
+    padding: .3rem;
+    font-size: 1rem;
+}
+.account-form input {
+    align-self: center;
+    border: 1px solid #DEE2E6;
+    border-radius: 8px;
+    width: 100%;
+    padding: .6rem;
+    box-sizing: border-box; /* Prevent Overflow */
+    font-size: 1rem;
+}
+.account-form input[type=submit] {
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.account-form input[type=submit]:hover {
+    background-color: #0B5ED7;
+}
+.account-form input[type=submit]:active {
+    background-color: #094599;
 }

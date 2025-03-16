@@ -15,7 +15,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(session({
     store: MongoStore.create({client, dbName: process.env.DB_NAME}),
-    secret: 'discoKingCave1111',
+    secret: 'discoKingCave!1!1!',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false } //later learn more
@@ -31,6 +31,7 @@ connectDB().then(() => {
 
     // research how to do something similar to transaction in MSSQL (mongo session)
     
+    app.use("/auth", require("./routes/authRoutes"));
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
     app.use("/rooms", require("./routes/roomRoutes"));
@@ -38,8 +39,6 @@ connectDB().then(() => {
     app.use("/announcements", require("./routes/announcementRoutes"));
     app.use("/reservations", require("./routes/reservationRoutes"));
     app.use("/logs", require("./routes/logRoutes"));
-    
-    app.use("/auth", require("./routes/authRoutes"));
 
     app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 });

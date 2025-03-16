@@ -6,10 +6,6 @@ exports.renderCreateAdmin = async (req, res) => {
     res.render('admin-create');
 };
 
-exports.renderLoginAdmin = async (req, res) => {
-    res.render('admin-login');
-};
-
 exports.renderDashboard = async (req, res) => {
     res.render('admin/dashboard', {currentPage: 'dashboard', user : req.session.user});
 };
@@ -68,45 +64,6 @@ exports.postCreateAdmin = async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
-    }
-};
-
-exports.postLoginAdmin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const db = getDB();
-
-        const match = await db.collection("admins").findOne({ email });
-
-        if(match) {
-            console.log('Match found!');
-            console.log('Email: ', match.email);
-            console.log('Password: ', match.password);
-
-            const passwordMatch = await bcryptor.verifyPassword(password, match.password);
-
-            if(passwordMatch) {
-                
-                console.log('Password Correct!');
-                req.session.user = {
-                    _id: match._id,
-                    name: match.name,
-                    email: match.email,
-                    role: match.role
-                };
-                res.render('admin/dashboard', {user: match});
-                
-            } else {
-                console.log('Password Incorrect!');
-                res.render('admin-login');
-            }
-        } else {
-            console.log('User not found...');
-            res.render('admin-login');
-        }
-    } catch {
-
     }
 };
 
