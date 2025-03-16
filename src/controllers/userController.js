@@ -3,7 +3,7 @@ const bcryptor = require("../modules/bcryptor");
 const { ObjectId } = require("mongodb");
 
 exports.renderCreateUser = async (req, res) => {
-    res.render('user-create');
+    res.render('user-signup');
 };
 
 exports.renderDashboard = async (req, res) => {
@@ -28,7 +28,7 @@ exports.postCreateUser = async (req, res) => {
 
         // check for existing user
         const existingUser = await db.collection("users").findOne({ email });
-        if (existingUser) return res.status(400).json({ error: "Email already registered" });
+        if (existingUser) return res.status(400).json({ error: "Email already exists." });
 
         // Hash password and insert data
         const result = await db.collection("users").insertOne({
@@ -50,8 +50,8 @@ exports.postCreateUser = async (req, res) => {
             timestamp: new Date(),
         });
 
-        res.status(201).json({ message: "User created", id: result.insertedId });
-        res.render('createUser');
+        //res.status(201).json({ message: "User created", id: result.insertedId });
+        res.redirect('/auth/login');
     } catch {
         res.status(500).json({ error: "Failed to create user" });
     }

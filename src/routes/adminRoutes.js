@@ -4,8 +4,8 @@ const { updateAdmin, deleteAdmin, renderCreateAdmin, renderDashboard, postCreate
 const router = express.Router();
 
 // Admin
-router.get('/register', renderCreateAdmin);
-router.post('/register', postCreateAdmin);
+router.get('/signup', renderCreateAdmin);
+router.post('/signup', postCreateAdmin);
 
 //patch for update
 

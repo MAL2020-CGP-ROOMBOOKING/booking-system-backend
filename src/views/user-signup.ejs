@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create User</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+    <body>
+
+        <header class="back-header">
+            <a onclick="history.back()">⇐ Back to Login</a>
+        </header>
+        
+        <main class="account-main">
+            <form action="/users/signup" method="post" class="account-form">
+                <h1>Sign Up</h1> <br><br>
+
+                <label>Name</label> <br>
+                <input type="text" name="name" required> <br><br>
+
+                <label>Email Address</label> <br>
+                <input type="email" name="email" required> <br><br>
+
+                <label>Password</label> <br>
+                <input type="password" name="password" required> <br><br>
+
+                <label>Phone Number</label> <br>
+                <input type="text" name="phoneNumber" pattern="[0-9]{10, 11}" required> <br><br>
+
+                <label>Company</label> <br>
+                <input type="text" name="company" required> <br><br><br>
+
+                <input type="submit" value="Create User">
+            </form>
+        </main>
+
+    </body>
+</html>

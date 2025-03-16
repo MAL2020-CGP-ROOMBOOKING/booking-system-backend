@@ -4,6 +4,9 @@
     margin: 0;
     padding: 0;
 }
+a {
+    text-decoration: none;
+}
 
 .navbar {
     display: flex;
@@ -22,13 +25,13 @@
 .navbar a {
     font-size: 1.2rem;
     color: #989D9E;
-    text-decoration: none;
     transition: 0.3s;
 }
 .navbar a.active, .navbar a:hover {
     color: #DAE5E5;
 }
 
+/* Landing Page Header */
 .landing-header {
     background-image: url('wp-ship.jpg');
     background-size: cover;
@@ -47,7 +50,6 @@
     cursor: pointer;
     width: fit-content;
     color: white;
-    text-decoration: none;
     padding: 1rem;
     transition: 0.3s;
 }
@@ -55,6 +57,7 @@
     background-color: #33393F;
 }
 
+/* Form */
 .account-main {
     display: flex;
     justify-content: center;
@@ -97,4 +100,35 @@
 }
 .account-form input[type=submit]:active {
     background-color: #094599;
+}
+
+/* Signup */
+.signup-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+}
+.signup-section a {
+    background-color: #0D6EFD;
+    cursor: pointer;
+    color: white;
+    border-radius: 16px;
+    padding: .5rem 1rem;
+    margin-top: 16px;
+    transition: 0.3s;
+}
+.signup-section a:hover {
+    background-color: #0B5ED7;
+}
+.signup-section a:active {
+    background-color: #094599;
+}
+
+.back-header {
+    display: flex;
+    padding: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
 }

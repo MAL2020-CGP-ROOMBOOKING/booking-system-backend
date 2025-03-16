@@ -37,7 +37,7 @@ exports.postCreateAdmin = async (req, res) => {
         const db = getDB();
 
         const existingAdmin = await db.collection("admins").findOne({ email });
-        if (existingAdmin) return res.status(400).json({ error: "Email already registered" });
+        if (existingAdmin) return res.status(400).json({ error: "Email already exists." });
 
         // Hash password & insert data
         const result = await db.collection("admins").insertOne({

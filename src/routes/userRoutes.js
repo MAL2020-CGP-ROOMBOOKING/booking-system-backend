@@ -3,8 +3,8 @@ const { updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUse
 
 const router = express.Router();
 
-router.get('/register', renderCreateUser);
-router.post('/register', postCreateUser);
+router.get('/signup', renderCreateUser);
+router.post('/signup', postCreateUser);
 
 // router.patch('/update', updateUser);
 
