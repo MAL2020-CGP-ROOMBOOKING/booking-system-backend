@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Reservation</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+    <body>
+
+        <header class="back-header">
+            <a onclick="history.back()">⇐ Back to Dashboard</a>
+        </header>
+        
+        <main class="reservation-main">
+            <h1>Book a Room</h1>
+            <p>Select a room to view its weekly schedule and make a booking.</p> <br>
+
+            <form action="post">
+
+                <label for="selectedRoom">Select Room</label>
+
+                <select name="selectedRoom" id="selectedRoom">
+                    <option value="Meeting Room A">Meeting Room A</option>
+                </select>
+
+                <div id="week-loader">
+                    <button>Previous Week</button>
+                    <span>Date - Date</span>
+                    <button>Next Week</button>
+                </div>
+
+                <input type="submit" value="Book">
+            </form>
+        </main>    
+    </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Reservation</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="back-header">
+        <a onclick="history.back()">⇐ Back to Dashboard</a>
+    </header>
+
+    <div class="container my-4">
+        <h1 class="text-left">Book a Room</h1>
+        <p class="text-center">Select a room to view its weekly schedule and make a booking.</p>
+
+        <div class="mb-4">
+            <label for="roomSelect" class="form-label">Select Room</label>
+            <select id="roomSelect" class="form-select">
+                <!-- for each room in db, add 1 option -->
+                <option value="Conference A">Conference A</option>
+                <option value="Conference B">Conference B</option>
+                <option value="Counseling Room A">Counseling Room A</option>
+                <option value="Counseling Room B">Counseling Room B</option>
+                <option value="Counseling Room C">Counseling Room C</option>
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <button class="btn btn-secondary btn-sm" onclick="loadPreviousWeek()">Previous Week</button>
+            <h4 id="weekRange">Sunday, 12/1/2024 - Saturday, 12/7/2024</h4> <!-- get current week -->
+            <button class="btn btn-secondary btn-sm" onclick="loadNextWeek()">Next Week</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr id="tableHeaders"></tr>
+                </thead>
+                <tbody id="scheduleTable"></tbody>
+            </table>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary btn-lg w-100" onclick="showConfirmationModal()">Book Selected Slots</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You have selected the following slots:</p>
+                    <ul id="selectedSlotsList"></ul>
+                    <p>Do you want to confirm this booking?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmBooking()">Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const timeSlots = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+        let currentWeekStart = new Date("2024-12-01");
+
+        function renderSchedule() {
+            const scheduleTable = document.getElementById("scheduleTable");
+            const tableHeaders = document.getElementById("tableHeaders");
+            const weekRange = document.getElementById("weekRange");
+            scheduleTable.innerHTML = "";
+            tableHeaders.innerHTML = "";
+
+            const weekDates = [];
+            const startDate = new Date(currentWeekStart);
+            for (let i = 0; i < 7; i++) {
+                weekDates.push(new Date(startDate));
+                startDate.setDate(startDate.getDate() + 1);
+            }
+
+            weekRange.textContent = `${weekDates[0].toLocaleDateString()} - ${weekDates[6].toLocaleDateString()}`;
+
+            const timeHeader = document.createElement("th");
+            timeHeader.textContent = "Time";
+            tableHeaders.appendChild(timeHeader);
+
+            weekDates.forEach(date => {
+                const header = document.createElement("th");
+                header.innerHTML = `${date.toLocaleDateString()}<br>${days[date.getDay()]}`;
+                tableHeaders.appendChild(header);
+            });
+
+            timeSlots.forEach(slot => {
+                const row = document.createElement("tr");
+                const timeCell = document.createElement("td");
+                timeCell.textContent = slot;
+                row.appendChild(timeCell);
+
+                weekDates.forEach(() => {
+                    const cell = document.createElement("td");
+                    cell.className = "slot available";
+                    cell.textContent = "Available";
+                    cell.onclick = () => toggleSlotSelection(cell);
+                    row.appendChild(cell);
+                });
+
+                scheduleTable.appendChild(row);
+            });
+        }
+
+        function toggleSlotSelection(cell) {
+            if (cell.classList.contains("pending")) return;
+
+            if (cell.classList.contains("selected")) {
+                cell.classList.remove("selected");
+                cell.classList.add("available");
+                cell.textContent = "Available";
+            } else {
+                cell.classList.remove("available");
+                cell.classList.add("selected");
+                cell.textContent = "Selected";
+            }
+        }
+
+        function showConfirmationModal() {
+            const cells = document.querySelectorAll(".selected");
+            const selectedSlotsList = document.getElementById("selectedSlotsList");
+            selectedSlotsList.innerHTML = "";
+
+            cells.forEach(cell => {
+                const date = cell.closest("table").querySelectorAll("th")[cell.cellIndex].textContent;
+                const time = cell.closest("tr").cells[0].textContent;
+                const listItem = document.createElement("li");
+                listItem.textContent = `Date: ${date}, Time: ${time}`;
+                selectedSlotsList.appendChild(listItem);
+            });
+
+            const modal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+            modal.show();
+        }
+
+        function confirmBooking() {
+            document.querySelectorAll(".selected").forEach(cell => {
+                cell.classList.remove("selected");
+                cell.classList.add("pending");
+                cell.textContent = "Pending";
+            });
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById("confirmationModal"));
+            modal.hide();
+            alert("Booking confirmed!");
+        }
+
+        function loadPreviousWeek() {
+            currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+            renderSchedule();
+        }
+
+        function loadNextWeek() {
+            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+            renderSchedule();
+        }
+
+        renderSchedule();
+    </script>
+</body>
+</html>

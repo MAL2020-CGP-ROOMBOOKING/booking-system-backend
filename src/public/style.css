@@ -125,28 +125,30 @@ a {
 .signup-section a:active {
     background-color: #094599;
 }
+
+/* Return to previous page */
 .back-header {
     display: flex;
-    padding: 1.1rem;
+}
+.back-header a {
     font-size: 1.2rem;
     font-weight: bold;
+    padding: 1.1rem;
     cursor: pointer;
 }
 
-.dashboard-body {
-    border: 1px solid red;
-    height: 90vh;
-}
 .dashboard-body header {
     border: 1px solid blue;
     padding: 2rem;
     text-align: center;
 }
 .dashboard-body main {
-    border: 1px solid green;
     padding: 4rem 6rem;
     display: flex;
     flex-direction: column;
+}
+.dashboard-body h1 {
+    color: #0D6EFD;
 }
 .dashboard-body table {
     border-collapse: collapse;
@@ -175,5 +177,52 @@ a {
     background-color: #0B5ED7;
 }
 .dashboard-body a:active {
+    background-color: #094599;
+}
+
+/* Reservation */
+.reservation-main {
+    border: 1px solid cyan;
+    padding: 2rem 6.4rem;
+}
+.reservation-main h1 {
+    color: #0D6EFD;
+}
+.reservation-main p {
+    text-align: center;
+}
+.reservation-main label {
+    display: inline-block;
+    padding: .3rem;
+    font-size: 1rem;
+}
+.reservation-main select, .reservation-main input[type=submit] {
+    align-self: center;
+    border: 1px solid #DEE2E6;
+    border-radius: 8px;
+    width: 100%;
+    padding: .6rem;
+    box-sizing: border-box; /* Prevent Overflow */
+    font-size: 1.2rem;
+    background-color: #F2F2F2;
+}
+
+#week-loader {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 0;
+}
+
+.reservation-main input[type=submit] {
+    border: none;
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.reservation-main input[type=submit]:hover {
+    background-color: #0B5ED7;
+}
+.reservation-main input[type=submit]:active {
     background-color: #094599;
 }

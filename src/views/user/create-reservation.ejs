@@ -6,24 +6,63 @@
 </head>
     <body>
 
-        <nav class="topnav">
-            <h1>Create Reservation</h1>
-        </nav>
+        <header class="back-header">
+            <a onclick="history.back()">⇐ Back to Dashboard</a>
+        </header>
         
-        <form action="/reservations/create" method="post">
+        <main class="reservation-main">
+            <h1>Book a Room</h1>
+            <p>Select a room to view its weekly schedule and make a booking.</p> <br>
 
-            <h2>Create Reservation</h2>
+            <form action="post">
 
-            <!-- Show selected room details -->
+                <label for="selectedRoom">Select Room</label>
 
-            <input type="date" name="reserveDate" required><br><br>
+                <select name="selectedRoom" id="selectedRoom">
+                    <option value="Meeting Room A">Meeting Room A</option>
+                </select>
 
-            <%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %>
+                <div id="week-loader">
+                    <button>Previous Week</button>
+                    <span id="currentWeek">Current Week</span>
+                    <button>Next Week</button>
+                </div>
 
-            <%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %>
+                <input type="submit" value="Book">
+            </form>
+        </main>
 
-            <input type="submit" value="Reserve">
-        </form>
-            
+        <script>
+            function getMondayOfCurrentWeek() {
+                const today = new Date();
+                const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+                const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust if today is Sunday
+                const monday = new Date(today);
+                monday.setDate(today.getDate() + diff); // Move to Monday
+                return monday.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+            }
+
+            function getFridayOfCurrentWeek() {
+                const today = new Date();
+                const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+                const diff = dayOfWeek === 0 ? 5 : 5 - dayOfWeek;
+                const friday = new Date(today);
+                friday.setDate(today.getDate() + diff); // Move to Friday
+                return friday.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+            }
+
+            function alterDateFormat(date) {
+                x = date.value.split('-');
+                newDate = x[1]+'/'+x[2]+'/'+x[0];
+                return newDate;
+            }
+        
+            document.addEventListener("DOMContentLoaded", function() {
+                monday = alterDateFormat(getMondayOfCurrentWeek());
+                friday = alterDateFormat(getFridayOfCurrentWeek());
+                document.getElementById("currentWeek").textContent = `${monday} - ${friday}`;
+            });
+        </script>
+        
     </body>
 </html>
