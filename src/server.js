@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
 const { connectDB, client } = require("./config/db");
-const { authenticateToken } = require("./middleware/authMiddleware");
+// const { authenticateToken } = require("./middleware/authMiddleware");
 const MongoStore = require("connect-mongo")
 
 const app = express();
@@ -15,10 +15,10 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(session({
     store: MongoStore.create({client, dbName: process.env.DB_NAME}),
-    secret: 'discoKingCave!1!1!',
+    secret: '!disco@King#Cave$2%3^',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } //later learn more
+    cookie: { secure: false } // system unable to work if set to true, since localhost is http, not https
 }));
 
 app.get('/', async (req, res) => {

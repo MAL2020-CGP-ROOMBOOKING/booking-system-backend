@@ -46,7 +46,7 @@ a {
 }
 .landing-header a {
     background-color: #212529;
-    border-radius: 12px;
+    border-radius: 24px;
     cursor: pointer;
     width: fit-content;
     color: white;
@@ -57,7 +57,7 @@ a {
     background-color: #33393F;
 }
 
-/* Form */
+/* Form for login and signup */
 .account-main {
     display: flex;
     justify-content: center;
@@ -88,6 +88,7 @@ a {
     padding: .6rem;
     box-sizing: border-box; /* Prevent Overflow */
     font-size: 1rem;
+    background-color: #F2F2F2;
 }
 .account-form input[type=submit] {
     background-color: #0D6EFD;
@@ -102,7 +103,7 @@ a {
     background-color: #094599;
 }
 
-/* Signup */
+/* Signup button under login */
 .signup-section {
     display: flex;
     flex-direction: column;
@@ -124,11 +125,55 @@ a {
 .signup-section a:active {
     background-color: #094599;
 }
-
 .back-header {
     display: flex;
     padding: 1.1rem;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
+}
+
+.dashboard-body {
+    border: 1px solid red;
+    height: 90vh;
+}
+.dashboard-body header {
+    border: 1px solid blue;
+    padding: 2rem;
+    text-align: center;
+}
+.dashboard-body main {
+    border: 1px solid green;
+    padding: 4rem 6rem;
+    display: flex;
+    flex-direction: column;
+}
+.dashboard-body table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+.dashboard-body th, td {
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+}
+.dashboard-body tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.dashboard-body a {
+    align-self: center;
+    border-radius: 8px;
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 1rem;
+    margin: 3.6rem;
+}
+.dashboard-body a:hover {
+    background-color: #0B5ED7;
+}
+.dashboard-body a:active {
+    background-color: #094599;
 }
