@@ -29,39 +29,53 @@
                 </div>
 
                 <input type="submit" value="Book">
+
             </form>
         </main>
 
+        <!-- Current Week Display -->
         <script>
-            function getMondayOfCurrentWeek() {
+            function getCurrentWeek() {
+                monday = reformatDate(getMonday());
+                friday = reformatDate(getFriday());
+                currentWeek = `${monday} - ${friday}`;
+                return currentWeek;
+            }
+            function getMonday() {
                 const today = new Date();
                 const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
                 const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust if today is Sunday
                 const monday = new Date(today);
-                monday.setDate(today.getDate() + diff); // Move to Monday
+                monday.setDate(today.getDate() + diff + 1); // Move to Monday, + 1 because Malaysia is 1 day ahead of default timezone.
                 return monday.toISOString().split("T")[0]; // Format as YYYY-MM-DD
             }
-
-            function getFridayOfCurrentWeek() {
+            function getFriday() {
                 const today = new Date();
-                const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+                const dayOfWeek = today.getDay();
                 const diff = dayOfWeek === 0 ? 5 : 5 - dayOfWeek;
                 const friday = new Date(today);
-                friday.setDate(today.getDate() + diff); // Move to Friday
-                return friday.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+                friday.setDate(today.getDate() + diff + 1); // Move to Friday
+                return friday.toISOString().split("T")[0];
             }
-
-            function alterDateFormat(date) {
-                x = date.value.split('-');
-                newDate = x[1]+'/'+x[2]+'/'+x[0];
-                return newDate;
+            function reformatDate(date) {
+                const [year, month, day] = date.split("-");
+                reformattedDate = `${day}/${month}/${year}`;
+                return reformattedDate;
             }
         
             document.addEventListener("DOMContentLoaded", function() {
-                monday = alterDateFormat(getMondayOfCurrentWeek());
-                friday = alterDateFormat(getFridayOfCurrentWeek());
-                document.getElementById("currentWeek").textContent = `${monday} - ${friday}`;
+                currentWeek = getCurrentWeek();
+                document.getElementById("currentWeek").textContent = `${currentWeek}`;
             });
+        </script>
+
+        <!-- Generate Timetable -->
+        <script>
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            const timeSlot = ['8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
+
+            // startTime and endTime is selected through <select>
+            // booked time and day for a room is generated through this timetable
         </script>
         
     </body>
