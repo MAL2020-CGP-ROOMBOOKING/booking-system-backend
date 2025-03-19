@@ -155,7 +155,7 @@ a {
     border-spacing: 0;
     width: 100%;
 }
-.dashboard-body th, td {
+.dashboard-body th, .dashboard-body td {
     text-align: left;
     padding: 16px;
     border-bottom: 1px solid #ddd;
@@ -213,16 +213,35 @@ a {
     padding: 2rem 0;
 }
 
+/* Timetable */
+
+
 .reservation-main input[type=submit] {
     border: none;
     background-color: #0D6EFD;
     color: white;
     transition: 0.3s;
     cursor: pointer;
+    margin-top: 2rem;
 }
 .reservation-main input[type=submit]:hover {
     background-color: #0B5ED7;
 }
 .reservation-main input[type=submit]:active {
     background-color: #094599;
+}
+
+.timetable {
+    width: 100%;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 1rem;
+}
+.timetable th {
+    border: 1px solid blue;
+    height: 2rem;
+}
+.timetable td {
+    border: 1px solid green;
+    height: 2rem;
 }
