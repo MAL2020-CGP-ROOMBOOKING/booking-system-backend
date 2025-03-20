@@ -5,34 +5,6 @@ exports.renderCreateReservation = async (req, res) => {
     res.render('user/create-reservation', {currentPage: 'bookings'});
 };
 
-exports.getAllReservations = async (req, res) => {
-    try {
-        const reservations = await getDB().collection("reservations").find().toArray();
-        res.json(reservations);
-    } catch (err) {
-        console.error("Error fetching reservations:", err);
-        res.status(500).json({ error: "Failed to fetch reservations", details: err.message });
-    }
-};
-
-exports.getReservationById = async (req, res) => {
-    try {
-        const { reservationId } = req.params;
-        if (!ObjectId.isValid(reservationId)) {
-            return res.status(400).json({ error: "Invalid reservation ID format" });
-        }
-
-        const reservation = await getDB().collection("reservations").findOne({ _id: new ObjectId(reservationId) });
-
-        if (!reservation) return res.status(404).json({ error: "Reservation not found" });
-
-        res.json(reservation);
-    } catch (err) {
-        console.error("Error fetching reservation by ID:", err);
-        res.status(500).json({ error: "Failed to fetch reservation", details: err.message });
-    }
-};
-
 exports.createReservation = async (req, res) => {
     try {
         const { reserveDate, startTime, endTime } = req.body;
@@ -83,6 +55,46 @@ exports.createReservation = async (req, res) => {
     } catch (err) {
         console.error("Error creating reservation:", err);
         res.status(500).json({ error: "Failed to add reservation", details: err.message });
+    }
+};
+
+exports.getReservationByRoomAndWeek = async (req, res) => {
+    try {
+        const { room, week } = req.body;
+
+        db = getDB();
+
+        console.log();
+    } catch {
+
+    }
+};
+
+exports.getAllReservations = async (req, res) => {
+    try {
+        const reservations = await getDB().collection("reservations").find().toArray();
+        res.json(reservations);
+    } catch (err) {
+        console.error("Error fetching reservations:", err);
+        res.status(500).json({ error: "Failed to fetch reservations", details: err.message });
+    }
+};
+
+exports.getReservationById = async (req, res) => {
+    try {
+        const { reservationId } = req.params;
+        if (!ObjectId.isValid(reservationId)) {
+            return res.status(400).json({ error: "Invalid reservation ID format" });
+        }
+
+        const reservation = await getDB().collection("reservations").findOne({ _id: new ObjectId(reservationId) });
+
+        if (!reservation) return res.status(404).json({ error: "Reservation not found" });
+
+        res.json(reservation);
+    } catch (err) {
+        console.error("Error fetching reservation by ID:", err);
+        res.status(500).json({ error: "Failed to fetch reservation", details: err.message });
     }
 };
 

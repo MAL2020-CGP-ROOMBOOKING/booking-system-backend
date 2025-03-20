@@ -22,54 +22,14 @@
                     <option value="Meeting Room A">Meeting Room A</option>
                 </select>
 
-                <div id="week-loader">
-                    <button>Previous Week</button>
-                    <span id="currentWeek">Current Week</span>
-                    <button>Next Week</button>
-                </div>
+                <%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %>
+                <%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %>
 
-                <%- include('../partials/reservation-schedule.ejs') %>
+                <%- include('../partials/reservation-schedule') %>
 
                 <input type="submit" value="Book">
 
             </form>
         </main>
-
-        <!-- Current Week Display -->
-        <script>
-            function getCurrentWeek() {
-                monday = reformatDate(getMonday());
-                friday = reformatDate(getFriday());
-                currentWeek = `${monday} - ${friday}`;
-                return currentWeek;
-            }
-            function getMonday() {
-                const today = new Date();
-                const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
-                const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust if today is Sunday
-                const monday = new Date(today);
-                monday.setDate(today.getDate() + diff + 1); // Move to Monday, + 1 because Malaysia is 1 day ahead of default timezone.
-                return monday.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-            }
-            function getFriday() {
-                const today = new Date();
-                const dayOfWeek = today.getDay();
-                const diff = dayOfWeek === 0 ? 5 : 5 - dayOfWeek;
-                const friday = new Date(today);
-                friday.setDate(today.getDate() + diff + 1); // Move to Friday
-                return friday.toISOString().split("T")[0];
-            }
-            function reformatDate(date) {
-                const [year, month, day] = date.split("-");
-                reformattedDate = `${day}/${month}/${year}`;
-                return reformattedDate;
-            }
-        
-            document.addEventListener("DOMContentLoaded", function() {
-                currentWeek = getCurrentWeek();
-                document.getElementById("currentWeek").textContent = `${currentWeek}`;
-            });
-        </script>
-        
     </body>
 </html>

@@ -1,3 +1,9 @@
+<div id="week-loader">
+    <button>Previous Week</button>
+    <span id="currentWeek">Current Week</span>
+    <button>Next Week</button>
+</div>
+
 <table id="timetable" class="timetable">
     <thead>
         <tr id="timeslot-row">
@@ -6,6 +12,41 @@
     </thead>
 </table>
 
+<!-- Current Week Display -->
+<script>
+    function getCurrentWeek() {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+
+        // Get Monday
+        const monday = new Date(today);
+        monday.setDate(monday.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1) + 1);
+
+        // Generate Current Week
+        const weekDates = [];
+        for(let i = 0; i < 5; i++) {
+            const weekDay = new Date(monday);
+            weekDay.setDate(monday.getDate() + i);
+            weekDates.push(weekDay.toISOString().split('T')[0]);
+        }
+        return weekDates;
+    }
+
+    function reformatDate(date) {
+        const [year, month, day] = date.split("-");
+        const reformattedDate = `${day}/${month}/${year}`;
+        return reformattedDate;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const currentWeek = getCurrentWeek();
+        const monday = reformatDate(currentWeek[0]);
+        const friday = reformatDate(currentWeek[4]);
+        document.getElementById("currentWeek").textContent = `${monday} - ${friday}`;
+    });
+</script>
+
+<!-- Reservation Schedule Display -->
 <script>
     const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
     const timeSlot = ['8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
