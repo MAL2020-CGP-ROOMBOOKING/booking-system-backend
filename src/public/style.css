@@ -196,26 +196,19 @@ a {
     padding: .3rem;
     font-size: 1rem;
 }
-.reservation-main select, .reservation-main input[type=submit] {
+.reservation-main select, .reservation-main input[type=submit], .reservation-main input[type=date] {
     align-self: center;
     border: 1px solid #DEE2E6;
     border-radius: 8px;
     width: 100%;
-    padding: .6rem;
+    padding: .4rem;
     box-sizing: border-box; /* Prevent Overflow */
-    font-size: 1.2rem;
+    font-size: 1rem;
     background-color: #F2F2F2;
-}
-
-#week-loader {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem 0;
+    margin: .2rem;
 }
 
 /* Timetable */
-
-
 .reservation-main input[type=submit] {
     border: none;
     background-color: #0D6EFD;
@@ -223,11 +216,35 @@ a {
     transition: 0.3s;
     cursor: pointer;
     margin-top: 2rem;
+    padding: .6rem;
+    font-size: 1.2rem;
 }
 .reservation-main input[type=submit]:hover {
     background-color: #0B5ED7;
 }
 .reservation-main input[type=submit]:active {
+    background-color: #094599;
+}
+
+#week-loader {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+#week-loader button {
+    border: none;
+    border-radius: 8px;
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: .5rem;
+}
+#week-loader button:hover {
+    background-color: #0B5ED7;
+}
+#week-loader button:active {
     background-color: #094599;
 }
 

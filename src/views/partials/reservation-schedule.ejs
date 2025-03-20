@@ -1,6 +1,6 @@
 <div id="week-loader">
     <button>Previous Week</button>
-    <span id="currentWeek">Current Week</span>
+    <p id="currentWeek">Current Week</p>
     <button>Next Week</button>
 </div>
 
@@ -20,7 +20,7 @@
 
         // Get Monday
         const monday = new Date(today);
-        monday.setDate(monday.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1) + 1);
+        monday.setDate(monday.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
 
         // Generate Current Week
         const weekDates = [];

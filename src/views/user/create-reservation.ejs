@@ -15,21 +15,34 @@
             <p>Select a room to view its weekly schedule and make a booking.</p> <br>
 
             <form action="post">
-
-                <label for="selectedRoom">Select Room</label>
-
-                <select name="selectedRoom" id="selectedRoom">
-                    <option value="Meeting Room A">Meeting Room A</option>
-                </select>
-
-                <%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %>
-                <%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %>
+                <table style="width: 40%;">
+                    <tr>
+                        <td><label for="selectedRoom">Select Room</label></td>
+                        <td>
+                            <select name="selectedRoom" id="selectedRoom">
+                                <option value="Meeting Room A">Meeting Room A</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="date">Date</label></td>
+                        <td><input type="date" name="date" id="date" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="startTime">Time Start</label></td>
+                        <td><%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %></td>
+                    </tr>
+                    <tr>
+                        <td><label for="endTime">Time End</label></td>
+                        <td><%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %></td>
+                    </tr>
+                </table>
 
                 <%- include('../partials/reservation-schedule') %>
 
                 <input type="submit" value="Book">
-
             </form>
         </main>
+
     </body>
 </html>
