@@ -63,8 +63,8 @@ exports.getReservationByRoomAndWeek = async (req, res) => {
         const { room, week } = req.body;
 
         db = getDB();
-
-        console.log();
+        match = db.collection('reservations')
+        console.log(room, week);
     } catch {
 
     }
@@ -95,48 +95,6 @@ exports.getReservationById = async (req, res) => {
     } catch (err) {
         console.error("Error fetching reservation by ID:", err);
         res.status(500).json({ error: "Failed to fetch reservation", details: err.message });
-    }
-};
-
-exports.updateReservation = async (req, res) => {
-    try {
-        const { reservationId } = req.params;
-        if (!ObjectId.isValid(reservationId)) {
-            return res.status(400).json({ error: "Invalid reservation ID format" });
-        }
-
-        const updateFields = {};
-        if (req.body.reserveDate) updateFields.date = new Date(req.body.reserveDate);
-        if (req.body.reserveTime) updateFields.time = req.body.reserveTime.trim();
-        if (req.body.status) updateFields.status = req.body.status;
-
-        if (Object.keys(updateFields).length === 0) {
-            return res.status(400).json({ error: "At least one field is required to update" });
-        }
-
-        const result = await getDB().collection("reservations").updateOne(
-            { _id: new ObjectId(reservationId) },
-            { $set: updateFields }
-        );
-
-
-        if (result.matchedCount === 0) {
-            return res.status(404).json({ error: "Reservation not found" });
-        }
-
-        const logEntry = {
-            actorId: req.user?.id ? new ObjectId(req.user.id) : "system",
-            actorType: req.user?.role || "system",
-            action: "RESERVATION_UPDATED",
-            details: { reservationId, updatedFields: updateFields },
-            timestamp: new Date(),
-        };
-        await getDB().collection("logs").insertOne(logEntry);
-
-        res.json({ message: "Reservation updated successfully" });
-    } catch (err) {
-        console.error("Error updating reservation:", err);
-        res.status(500).json({ error: "Failed to update reservation", details: err.message });
     }
 };
 

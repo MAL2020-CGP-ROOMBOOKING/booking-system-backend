@@ -1,7 +1,7 @@
 <div id="week-loader">
-    <button>Previous Week</button>
-    <p id="currentWeek">Current Week</p>
-    <button>Next Week</button>
+    <button type="button" onclick="getPrevWeek()">Previous Week</button>
+    <p id="displayedWeek">Current Week</p>
+    <button type="button" onclick="getNextWeek()">Next Week</button>
 </div>
 
 <table id="timetable" class="timetable">
@@ -14,19 +14,32 @@
 
 <!-- Current Week Display -->
 <script>
-    function getCurrentWeek() {
-        const today = new Date();
-        const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+    let currentMonday;
+    let currentWeek; // Used for Room Display?
 
-        // Get Monday
-        const monday = new Date(today);
-        monday.setDate(monday.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+    function getWeek(offsetDays = 0) {
+        let baseDate;
 
-        // Generate Current Week
+        if (currentMonday) {
+            // Continue from the last displayed Monday
+            baseDate = new Date(currentMonday);
+        } else {
+            // Calculate the current Monday if no previous week exists
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+            baseDate = new Date(today);
+            baseDate.setDate(baseDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+        }
+
+        // Move forward or backward
+        baseDate.setDate(baseDate.getDate() + offsetDays);
+        currentMonday = new Date(baseDate); // Update reference Monday
+
+        // Generate the Monday-Friday week
         const weekDates = [];
-        for(let i = 0; i < 5; i++) {
-            const weekDay = new Date(monday);
-            weekDay.setDate(monday.getDate() + i);
+        for (let i = 0; i < 5; i++) {
+            const weekDay = new Date(baseDate);
+            weekDay.setDate(baseDate.getDate() + i);
             weekDates.push(weekDay.toISOString().split('T')[0]);
         }
         return weekDates;
@@ -34,17 +47,33 @@
 
     function reformatDate(date) {
         const [year, month, day] = date.split("-");
-        const reformattedDate = `${day}/${month}/${year}`;
-        return reformattedDate;
+        return `${day}/${month}/${year}`;
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentWeek = getCurrentWeek();
-        const monday = reformatDate(currentWeek[0]);
-        const friday = reformatDate(currentWeek[4]);
-        document.getElementById("currentWeek").textContent = `${monday} - ${friday}`;
+    function updateWeekDisplay(offsetDays) {
+        const week = getWeek(offsetDays);
+        const monday = reformatDate(week[0]);
+        const friday = reformatDate(week[4]);
+        document.getElementById("displayedWeek").textContent = `${monday} - ${friday}`;
+        return week
+    }
+
+    function getNextWeek() {
+        currentWeek = updateWeekDisplay(7);
+        console.log(currentWeek);
+    }
+
+    function getPrevWeek() {
+        currentWeek = updateWeekDisplay(-7);
+        console.log(currentWeek);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        currentWeek = updateWeekDisplay(0); // Show current week on load
+        console.log(currentWeek);
     });
 </script>
+
 
 <!-- Reservation Schedule Display -->
 <script>
@@ -67,7 +96,6 @@
         dayRow.append(dayData);
         timetable.append(dayRow);
     });
-
-    // startTime and endTime is selected through <select>
+    
     // booked time and day for a room is generated through this timetable
 </script>
