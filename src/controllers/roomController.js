@@ -16,6 +16,14 @@ exports.getAllRooms = async (req, res) => {
 };
 
 exports.getRoomById = async (req, res) => {
+    const roomId = req.params.roomId;
+
+    const room = await getDB().collection("rooms").findOne({_id: new ObjectId(roomId)});
+    res.json(room);
+};
+
+/*
+exports.getRoomById = async (req, res) => {
     try {
         const { roomId } = req.params;
 
@@ -36,6 +44,7 @@ exports.getRoomById = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch room", details: err.message });
     }
 };
+*/
 
 exports.postCreateRoom = async (req, res) => {
     try {

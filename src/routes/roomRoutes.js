@@ -7,6 +7,7 @@ router.get('/create', renderCreateRoom);
 router.post('/create', postCreateRoom);
 
 router.get('/all', getAllRooms);
+router.get('/:roomId', getRoomById);
 
 /*
 router.get("/", getAllRooms);

@@ -4,17 +4,29 @@
 </select>
 
 <script>
+    // Directly use selectedRoom in other .ejs files.
     const selectedRoom = document.getElementById("selectedRoom");
 
     fetch('/rooms/all')
         .then(response => response.json())
         .then(rooms => {
-                rooms.forEach(room => {
-                    let option = document.createElement("option");
-                    option.value = room._id;
-                    option.textContent = room.roomName;
-                    selectedRoom.appendChild(option);
-                });
-            })
-        .catch(error => console.error("Error loading rooms:", error));
+            rooms.forEach((room, index) => {
+                let option = document.createElement("option");
+                option.value = room._id;
+                option.textContent = room.roomName;
+
+                if(index === 0) {
+                    option.selected = true;
+                }
+
+                selectedRoom.appendChild(option);
+                //console.log(`Room Id: ${selectedRoom.value}`);
+            });
+
+            // Fetch the first room when loaded.
+            if (typeof fetchOneRoom === "function") {
+                fetchOneRoom();
+            }
+        })
+        .catch(error => console.error("Error loading rooms:", error)); 
 </script>

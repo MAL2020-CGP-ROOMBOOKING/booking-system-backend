@@ -28,7 +28,9 @@
                 </div>
 
                 <div class="room-info">
-                    <p>Room Info Here</p>
+                    <h2 id="roomName"></h2>
+                    <p id="description"></p>
+                    <p id="pax"></p>
                 </div>
             </div>
             
@@ -38,5 +40,24 @@
 
         </form>
     </main>
+
+    <script>
+        selectedRoom.addEventListener("change", function() {
+            fetchOneRoom();
+        });
+
+        function fetchOneRoom() {
+            const roomId = selectedRoom.value;
+            if (!roomId) return;
+
+            fetch(`/rooms/${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("roomName").textContent = data.roomName;
+                    document.getElementById("description").textContent = `Description: ${data.description}`;
+                    document.getElementById("pax").textContent = `Pax: ${data.pax}`;
+                })
+        };
+    </script>
 </body>
 </html>
