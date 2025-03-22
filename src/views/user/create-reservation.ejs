@@ -42,15 +42,15 @@
     </main>
 
     <script>
-        selectedRoom.addEventListener("change", function() {
+        roomId.addEventListener("change", function() {
             fetchOneRoom();
         });
 
         function fetchOneRoom() {
-            const roomId = selectedRoom.value;
+            const room_id = roomId.value;
             if (!roomId) return;
 
-            fetch(`/rooms/${roomId}`)
+            fetch(`/rooms/${room_id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("roomName").textContent = data.roomName;

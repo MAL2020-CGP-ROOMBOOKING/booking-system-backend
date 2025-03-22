@@ -7,7 +7,7 @@ exports.renderCreateReservation = async (req, res) => {
 
 exports.createReservation = async (req, res) => {
     try {
-        const { date, startTime, endTime } = req.body;
+        const { roomId, date, startTime, endTime } = req.body;
 
         if (!date || !startTime || !endTime) {
             return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
@@ -19,19 +19,22 @@ exports.createReservation = async (req, res) => {
         }
         */
 
+        const input_date = new Date(date);
+        const input_startTime = new Date(`${date}T${startTime}`);
+        const input_endTime = new Date(`${date}T${endTime}`);
+
         const newReservation = {
             userId: req.session.user._id,
-            roomId: "_id",
-            date: new Date(date),
-            startTime,
-            endTime,
+            roomId,
+            date: input_date,
+            startTime: input_startTime,
+            endTime: input_endTime,
             status: "Pending",
             adminId: null,
             createdAt: new Date(),
         };
 
         const result = await getDB().collection("reservations").insertOne(newReservation);
-
 
         if (!result.insertedId) {
             return res.status(500).json({ error: "Failed to create reservation" });
@@ -43,7 +46,7 @@ exports.createReservation = async (req, res) => {
             action: "RESERVATION_CREATED",
             details: {
                 reservationId: result.insertedId,
-                roomId: "result.roomId",
+                roomId: result.roomId,
                 date,
                 startTime,
                 endTime, },

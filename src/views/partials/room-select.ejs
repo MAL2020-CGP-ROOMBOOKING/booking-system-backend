@@ -1,11 +1,9 @@
-<label for="selectedRoom">Select Room</label>
-
-<select name="selectedRoom" id="selectedRoom">
-</select>
+<label for="roomId">Select Room</label>
+<select name="roomId" id="roomId"></select>
 
 <script>
-    // Directly use selectedRoom in other .ejs files.
-    const selectedRoom = document.getElementById("selectedRoom");
+    // Directly use roomId in other .ejs files.
+    const roomId = document.getElementById("roomId");
 
     fetch('/rooms/all')
         .then(response => response.json())
@@ -19,8 +17,8 @@
                     option.selected = true;
                 }
 
-                selectedRoom.appendChild(option);
-                //console.log(`Room Id: ${selectedRoom.value}`);
+                roomId.appendChild(option);
+                //console.log(`Room Id: ${roomId.value}`);
             });
 
             // Fetch the first room when loaded.
