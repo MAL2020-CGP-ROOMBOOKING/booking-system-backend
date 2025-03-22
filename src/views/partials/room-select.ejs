@@ -1,0 +1,20 @@
+<label for="selectedRoom">Select Room</label>
+
+<select name="selectedRoom" id="selectedRoom">
+</select>
+
+<script>
+    const selectedRoom = document.getElementById("selectedRoom");
+
+    fetch('/rooms/all')
+        .then(response => response.json())
+        .then(rooms => {
+                rooms.forEach(room => {
+                    let option = document.createElement("option");
+                    option.value = room._id;
+                    option.textContent = room.roomName;
+                    selectedRoom.appendChild(option);
+                });
+            })
+        .catch(error => console.error("Error loading rooms:", error));
+</script>

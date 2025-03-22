@@ -1,4 +1,10 @@
-<select name="<%= name %>" id="<%= id %>" required>
+<% if(value === 'startTime') { %>
+    <label for="startTime">Time Start</label>
+<% } else if(value === 'endTime') { %>
+    <label for="endTime">Time End</label>
+<% } %>
+
+<select name="<%= value %>" id="<%= value %>" required>
     <option value="8:30">8:30 AM</option>
     <option value="9:00">9:00 AM</option>
     <option value="9:30">9:30 AM</option>

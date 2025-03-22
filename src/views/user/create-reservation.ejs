@@ -1,48 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Create Reservation</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-    <body>
 
-        <header class="back-header">
-            <a onclick="history.back()">⇐ Back to Dashboard</a>
-        </header>
-        
-        <main class="reservation-main">
-            <h1>Book a Room</h1>
-            <p>Select a room to view its weekly schedule and make a booking.</p> <br>
+<body>
+    <!-- Header -->
+    <%- include('../partials/back-header') %>
+    
+    <main class="reservation-main">
+        <h1>Book a Room</h1>
+        <p>Select a room to view its weekly schedule and make a booking.</p>
 
-            <form action="post">
-                <table style="width: 40%;">
-                    <tr>
-                        <td><label for="selectedRoom">Select Room</label></td>
-                        <td>
-                            <select name="selectedRoom" id="selectedRoom">
-                                <option value="Meeting Room A">Meeting Room A</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="date">Date</label></td>
-                        <td><input type="date" name="date" id="date" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="startTime">Time Start</label></td>
-                        <td><%- include('../partials/time-select', {name: 'startTime', id: 'startTime'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><label for="endTime">Time End</label></td>
-                        <td><%- include('../partials/time-select', {name: 'endTime', id: 'endTime'}) %></td>
-                    </tr>
-                </table>
+        <form action="/reservations/create" method="post">
 
-                <%- include('../partials/reservation-schedule') %>
+            <div class="reservation-top">
+                <div class="user-input">
+                    <%- include('../partials/room-select') %>
+                    
+                    <label for="date">Date</label>
+                    <input type="date" name="date" id="date" required>
 
-                <input type="submit" value="Book">
-            </form>
-        </main>
+                    <%- include('../partials/time-select', {value: 'startTime'}) %>
+                    <%- include('../partials/time-select', {value: 'endTime'}) %>
+                </div>
 
-    </body>
+                <div class="room-info">
+                    <p>Room Info Here</p>
+                </div>
+            </div>
+            
+            <%- include('../partials/reservation-schedule') %>
+
+            <input type="submit" value="Book">
+
+        </form>
+    </main>
+</body>
 </html>

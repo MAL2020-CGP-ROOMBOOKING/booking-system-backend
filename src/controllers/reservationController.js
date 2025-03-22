@@ -7,9 +7,9 @@ exports.renderCreateReservation = async (req, res) => {
 
 exports.createReservation = async (req, res) => {
     try {
-        const { reserveDate, startTime, endTime } = req.body;
+        const { date, startTime, endTime } = req.body;
 
-        if (!reserveDate || !startTime || !endTime) {
+        if (!date || !startTime || !endTime) {
             return res.status(400).json({ error: "User ID, Room ID, Date, and Time are required" });
         }
 
@@ -21,8 +21,8 @@ exports.createReservation = async (req, res) => {
 
         const newReservation = {
             userId: req.session.user._id,
-            roomId: "temp",
-            date: new Date(reserveDate),
+            roomId: "_id",
+            date: new Date(date),
             startTime,
             endTime,
             status: "Pending",
@@ -43,8 +43,8 @@ exports.createReservation = async (req, res) => {
             action: "RESERVATION_CREATED",
             details: {
                 reservationId: result.insertedId,
-                roomId: result.roomId,
-                date: reserveDate,
+                roomId: "result.roomId",
+                date,
                 startTime,
                 endTime, },
             timestamp: new Date(),

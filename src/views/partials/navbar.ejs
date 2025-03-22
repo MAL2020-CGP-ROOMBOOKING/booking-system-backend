@@ -21,7 +21,7 @@
         </div>
         
     <% } else if (user.role === 'user') { %>
-        <span>TSC Room Booking</span>
+        <span>User Dashboard</span>
         <div>
             <a href="/users/dashboard" class="<%= currentPage === 'dashboard' ? 'active' : '' %>">Dashboard</a>
             <a href="/reservations/create" class="<%= currentPage === 'bookings' ? 'active' : '' %>">Bookings</a>

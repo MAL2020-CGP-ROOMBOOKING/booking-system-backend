@@ -59,17 +59,19 @@ exports.postLogin = async (req, res) => {
             account = await db.collection("admins").findOne({ email });
 
             if(!account) {
-                res.render('login', {message: 'This account does not exist.'})
+                res.render('login', {user: null, currentPage: "login", message: 'This account does not exist.'})
                 // debug
                 console.log("User does not exist.")
+                return;
             }
         }
 
         const passwordMatch = await bcryptor.verifyPassword(password, account.password);
         if(!passwordMatch) {
-            res.render('login', {message: 'Invalid email or password.'})
+            res.render('login', {user: null, currentPage: "login", message: 'Invalid email or password.'})
             // debug
             console.log("Invalid email or password.")
+            return;
         }
 
         req.session.user = {
@@ -84,10 +86,9 @@ exports.postLogin = async (req, res) => {
         
         if(account.role === 'admin'){
             res.redirect('/admins/dashboard');
-        } else {
+        } else  {
             res.redirect('/users/dashboard');
         }
-        
     } catch (error) {
 
     }

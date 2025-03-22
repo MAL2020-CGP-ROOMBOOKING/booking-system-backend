@@ -1,10 +1,51 @@
-<div id="week-loader">
+<style>
+    .week-loader {
+        border: 1px solid orange;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+    .week-loader button {
+        border: none;
+        border-radius: 8px;
+        background-color: #0D6EFD;
+        color: white;
+        transition: 0.3s;
+        cursor: pointer;
+        padding: .5rem;
+    }
+    .week-loader button:hover {
+        background-color: #0B5ED7;
+    }
+    .week-loader button:active {
+        background-color: #094599;
+    }
+
+    .timetable {
+        width: 100%;
+        border: 1px solid red;
+        text-align: center;
+        font-size: 1rem;
+    }
+    .timetable th {
+        border: 1px solid blue;
+        height: 2rem;
+    }
+    .timetable td {
+        border: 1px solid green;
+        height: 2rem;
+    }
+</style>
+
+<div class="week-loader">
     <button type="button" onclick="getPrevWeek()">Previous Week</button>
     <p id="displayedWeek">Current Week</p>
     <button type="button" onclick="getNextWeek()">Next Week</button>
 </div>
 
-<table id="timetable" class="timetable">
+<table class="timetable" id="timetable">
     <thead>
         <tr id="timeslot-row">
             <th></th>
@@ -69,7 +110,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        currentWeek = updateWeekDisplay(0); // Show current week on load
+        currentWeek = updateWeekDisplay(0); // Show current week on page load
         console.log(currentWeek);
     });
 </script>

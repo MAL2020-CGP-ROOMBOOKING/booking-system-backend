@@ -5,10 +5,8 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-    <header class="back-header">
-        <a onclick="history.back()">⇐ Back to Login</a>
-    </header>
+    <!-- Header -->
+    <%- include('../partials/back-header') %>
     
     <main class="account-main">
         <form action="/users/signup" method="post" class="account-form">

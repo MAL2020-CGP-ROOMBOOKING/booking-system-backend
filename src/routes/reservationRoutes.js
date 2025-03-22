@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/create', renderCreateReservation);
 router.post('/create', createReservation)
 
+// in progress
 router.get('/reservations', (req, res) => {
     const { room, week } = req.query;
     const reservations = 0;
