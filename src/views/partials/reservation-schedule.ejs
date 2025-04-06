@@ -69,6 +69,7 @@
             const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
             baseDate = new Date(today);
             baseDate.setDate(baseDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            baseDate.setHours(baseDate.getHours() + 8); // Malaysia is 8 hours ahead of UTC (JS default timezone)
         }
 
         // Move forward or backward
