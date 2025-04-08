@@ -5,6 +5,39 @@ exports.renderCreateReservation = async (req, res) => {
     res.render('user/create-reservation', {currentPage: 'bookings'});
 };
 
+exports.getReservationsByRoomId = async (req, res) => {
+    const roomId = req.params.roomId;
+
+    // modify to search within the current selected week
+    const reservations = await getDB()
+        .collection("reservations")
+        .find({ roomId: roomId })
+        .toArray();
+
+    reservations.forEach(reservation => {
+        let startTime = reservation.startTime;
+        startTime.setHours(startTime.getHours() + 8);
+
+        let endTime = reservation.endTime;
+        endTime.setHours(endTime.getHours() + 8);
+
+        const test = reservation.date.getDay();
+        const date = reservation.date.toISOString().split("T")[0];
+        
+        startTime = startTime.toISOString().split("T")[1].slice(0, 5);
+        endTime = endTime.toISOString().split("T")[1].slice(0, 5);
+
+        console.log(test)
+        console.log(date);
+        console.log(startTime);
+        console.log(endTime);
+    });
+    
+    res.json(reservations)
+    // debug
+    console.log(reservations)
+};
+
 exports.createReservation = async (req, res) => {
     try {
         const { roomId, date, startTime, endTime } = req.body;
@@ -54,7 +87,6 @@ exports.createReservation = async (req, res) => {
         };
         await getDB().collection("logs").insertOne(logEntry);
 
-        res.status(201).json({ message: "Reservation created", id: result.insertedId });
     } catch (err) {
         console.error("Error creating reservation:", err);
         res.status(500).json({ error: "Failed to add reservation", details: err.message });

@@ -27,8 +27,6 @@ app.get('/', async (req, res) => {
 
 connectDB().then(() => {
     // const { authMiddleware } = require("./middleware/authMiddleware");
-
-    // research how to do something similar to transaction in MSSQL (mongo session)
     
     app.use("/auth", require("./routes/authRoutes"));
     app.use("/users", require("./routes/userRoutes"));

@@ -32,8 +32,8 @@
         height: 2rem;
     }
     .timetable td {
-        border: 1px solid green;
         height: 2rem;
+        font-weight: bold;
     }
 </style>
 
@@ -135,8 +135,11 @@
         dayRow.append(dayData);
 
         timeSlot.forEach(time => {
-            console.log(time);
             dayTimeData = document.createElement("td");
+
+            // fetch
+
+            dayTimeData.style.backgroundColor = "#DEDEDE";
             dayRow.append(dayTimeData);
         })
 
