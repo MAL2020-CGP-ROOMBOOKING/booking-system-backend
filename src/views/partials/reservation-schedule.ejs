@@ -1,6 +1,5 @@
 <style>
     .week-loader {
-
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -118,7 +117,7 @@
 <!-- Reservation Schedule Display -->
 <script>
     const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-    const timeSlot = ['8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
+    const timeSlot = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
 
     const timetable = document.getElementById('timetable');
     const timeSlotRow = document.getElementById('timeslot-row');
@@ -134,6 +133,13 @@
         dayData = document.createElement("td");
         dayData.append(document.createTextNode(day));
         dayRow.append(dayData);
+
+        timeSlot.forEach(time => {
+            console.log(time);
+            dayTimeData = document.createElement("td");
+            dayRow.append(dayTimeData);
+        })
+
         timetable.append(dayRow);
     });
     

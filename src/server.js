@@ -27,7 +27,6 @@ app.get('/', async (req, res) => {
 
 connectDB().then(() => {
     // const { authMiddleware } = require("./middleware/authMiddleware");
-    // temp removal of authMiddleware
 
     // research how to do something similar to transaction in MSSQL (mongo session)
     
