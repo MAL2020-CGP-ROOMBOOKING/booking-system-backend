@@ -252,3 +252,40 @@ a {
 .reservation-main input[type=submit]:active {
     background-color: #094599;
 }
+
+.week-loader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+}
+.week-loader button {
+    border: none;
+    border-radius: 8px;
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: .5rem;
+}
+.week-loader button:hover {
+    background-color: #0B5ED7;
+}
+.week-loader button:active {
+    background-color: #094599;
+}
+
+.timetable {
+    width: 100%;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 1rem;
+}
+.timetable th {
+    border: 1px solid blue;
+    height: 2rem;
+}
+.timetable td {
+    height: 2rem;
+    font-weight: bold;
+}
