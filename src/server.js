@@ -27,8 +27,8 @@ app.get('/', async (req, res) => {
 
 connectDB().then(() => {
     // const { authMiddleware } = require("./middleware/authMiddleware");
-    
     app.use("/auth", require("./routes/authRoutes"));
+    
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
     app.use("/rooms", require("./routes/roomRoutes"));

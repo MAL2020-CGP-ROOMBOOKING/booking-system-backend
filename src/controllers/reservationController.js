@@ -6,7 +6,8 @@ exports.renderCreateReservation = async (req, res) => {
 };
 
 exports.getReservationsByRoomId = async (req, res) => {
-    const roomId = req.params.roomId;
+    const roomId = req.query.roomId;
+    const dates = req.query.dates;
 
     // modify to search within the current selected week
     const reservations = await getDB()
@@ -26,16 +27,18 @@ exports.getReservationsByRoomId = async (req, res) => {
         
         startTime = startTime.toISOString().split("T")[1].slice(0, 5);
         endTime = endTime.toISOString().split("T")[1].slice(0, 5);
-
-        console.log(test)
-        console.log(date);
-        console.log(startTime);
-        console.log(endTime);
     });
+    console.log(roomId);
+    console.log(dates);
     
     res.json(reservations)
-    // debug
-    console.log(reservations)
+    
+};
+
+exports.getReservationsByDate = async (req, res) => {
+    const dates = req.query.dates;
+
+    
 };
 
 exports.createReservation = async (req, res) => {

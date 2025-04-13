@@ -259,6 +259,9 @@ a {
     align-items: center;
     margin: 2rem 0;
 }
+.week-loader p {
+    font-weight: bold;
+}
 .week-loader button {
     border: none;
     border-radius: 8px;
@@ -277,15 +280,18 @@ a {
 
 .timetable {
     width: 100%;
-    border: 1px solid red;
+    border: 6px solid #B2B2B2;
+    border-radius: 8px;
     text-align: center;
     font-size: 1rem;
+    border-spacing: 8px;
 }
 .timetable th {
-    border: 1px solid blue;
-    height: 2rem;
+    height: 3rem;
+    background-color: #CCCCCC;
 }
 .timetable td {
-    height: 2rem;
+    height: 3rem;
     font-weight: bold;
+    background-color: #CCCCCC;
 }

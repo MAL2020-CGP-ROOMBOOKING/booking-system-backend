@@ -38,24 +38,5 @@
             <input type="submit" value="Book">
         </form>
     </main>
-
-    <script>
-        roomId.addEventListener("change", function() {
-            fetchOneRoom();
-        });
-
-        function fetchOneRoom() {
-            const room_id = roomId.value;
-            if (!roomId) return;
-
-            fetch(`/rooms/${room_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("roomName").textContent = data.roomName;
-                    document.getElementById("description").textContent = `Description: ${data.description}`;
-                    document.getElementById("pax").textContent = `Pax: ${data.pax}`;
-                })
-        };
-    </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <div class="week-loader">
     <button type="button" onclick="getPrevWeek()">Previous Week</button>
-    <p id="displayedWeek">Current Week</p>
+    <p id="displayed-week">Current Week</p>
     <button type="button" onclick="getNextWeek()">Next Week</button>
 </div>
 
@@ -15,7 +15,8 @@
 <!-- Current Week Display -->
 <script>
     let currentMonday;
-    var currentWeek;
+    let currentWeek;
+    let currentDayDate = new Map();
 
     function getWeek(offsetDays = 0) {
         let baseDate;
@@ -26,7 +27,7 @@
         } else {
             // Calculate the current Monday if no previous week exists
             const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+            const dayOfWeek = today.getDay();
             baseDate = new Date(today);
             baseDate.setDate(baseDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
             baseDate.setHours(baseDate.getHours() + 8); // Malaysia is 8 hours ahead of UTC (JS default timezone)
@@ -34,7 +35,7 @@
 
         // Move forward or backward
         baseDate.setDate(baseDate.getDate() + offsetDays);
-        currentMonday = new Date(baseDate); // Update reference Monday
+        currentMonday = new Date(baseDate); // Update current Monday
 
         // Generate the Monday-Friday week
         const weekDates = [];
@@ -55,22 +56,38 @@
         const week = getWeek(offsetDays);
         const monday = reformatDate(week[0]);
         const friday = reformatDate(week[4]);
-        document.getElementById("displayedWeek").textContent = `${monday} - ${friday}`;
+        document.getElementById("displayed-week").textContent = `${monday} - ${friday}`;
         return week
     }
 
     function getNextWeek() {
         currentWeek = updateWeekDisplay(7);
         console.log(currentWeek);
+        genDayDateMap();
     }
 
     function getPrevWeek() {
         currentWeek = updateWeekDisplay(-7);
         console.log(currentWeek);
+        genDayDateMap();
     }
 
+    function genDayDateMap() {
+        const i = [0, 1, 2, 3, 4];
+
+        i.forEach((i) => {
+            currentDayDate.set(days[i], currentWeek[i]);
+        });
+
+        currentDayDate.forEach((value, key) => {
+            console.log(`Key: ${key}, Value: ${value}`);
+        });
+    }
+
+    // Show current week on page load
     document.addEventListener("DOMContentLoaded", function () {
-        currentWeek = updateWeekDisplay(0); // Show current week on page load
+        currentWeek = updateWeekDisplay(0);
+        genDayDateMap();
     });
 </script>
 
@@ -98,19 +115,28 @@
         timeSlot.forEach(time => {
             dayTimeData = document.createElement("td");
 
-            // fetch
+            // fetch according to daydate
 
-            dayTimeData.style.backgroundColor = "#DEDEDE";
+            // if else
+            dayTimeData.style.backgroundColor = "#E5E5E5";
             dayRow.append(dayTimeData);
         })
-
         timetable.append(dayRow);
     });
-    
-    // works now!
+
+    function getRoomSchedule() {
+        let params = new URLSearchParams();
+
+        params.append("roomId", roomId.value); // reread file, go through steps to find where roomId was
+        currentWeek.forEach(date => params.append("dates", date));
+
+        fetch(`/reservations?${params.toString()}`)
+            .then(res => res.json())
+            .then(data => console.log(data));
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
-        console.log("Test " + currentWeek);
+        getRoomSchedule();
     });
     
-    // booked time and day for a room is generated through this timetable
 </script>

@@ -2,8 +2,20 @@
 <select name="roomId" id="roomId"></select>
 
 <script>
-    // Directly use roomId in other .ejs files.
+    // <select> component
     const roomId = document.getElementById("roomId");
+
+    function fetchOneRoom() {
+        const room_id = roomId.value;
+        if (!roomId) return;
+        fetch(`/rooms/${room_id}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("roomName").textContent = data.roomName;
+                document.getElementById("description").textContent = `Description: ${data.description}`;
+                document.getElementById("pax").textContent = `Pax: ${data.pax}`;
+            })
+    };
 
     fetch('/rooms/all')
         .then(response => response.json())
@@ -18,13 +30,13 @@
                 }
 
                 roomId.appendChild(option);
-                //console.log(`Room Id: ${roomId.value}`);
             });
-
-            // Fetch the first room when loaded.
-            if (typeof fetchOneRoom === "function") {
-                fetchOneRoom();
-            }
+            
+            fetchOneRoom();
         })
         .catch(error => console.error("Error loading rooms:", error)); 
+
+    roomId.addEventListener("change", function() {
+        fetchOneRoom();
+    });
 </script>
