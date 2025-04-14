@@ -280,7 +280,7 @@ a {
 
 .timetable {
     width: 100%;
-    border: 6px solid #B2B2B2;
+    border: 6px solid #0D6EFD;
     border-radius: 8px;
     text-align: center;
     font-size: 1rem;
@@ -293,5 +293,4 @@ a {
 .timetable td {
     height: 3rem;
     font-weight: bold;
-    background-color: #CCCCCC;
 }

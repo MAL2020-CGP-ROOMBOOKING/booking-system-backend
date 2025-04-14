@@ -5,14 +5,9 @@
 </div>
 
 <table class="timetable" id="timetable">
-    <thead>
-        <tr id="timeslot-row">
-            <th></th>
-        </tr>
-    </thead>
 </table>
 
-<!-- Current Week Display -->
+<!-- Load Current Week -->
 <script>
     let currentMonday;
     let currentWeek;
@@ -100,43 +95,86 @@
     const timetable = document.getElementById('timetable');
     const timeSlotRow = document.getElementById('timeslot-row');
 
-    timeSlot.forEach(time => {
-        timeSlotHead = document.createElement("th");
-        timeSlotHead.append(document.createTextNode(time));
-        timeSlotRow.append(timeSlotHead);
-    });
+    let extractedData;
 
-    days.forEach(day => {
-        dayRow = document.createElement("tr");
-        dayData = document.createElement("td");
-        dayData.append(document.createTextNode(day));
-        dayRow.append(dayData);
+    function genTimetable() {
+        const thead = document.createElement("thead");
+        const timeSlotRow = document.createElement("tr");
+
+        timeSlotRow.appendChild(document.createElement("th"));
 
         timeSlot.forEach(time => {
-            dayTimeData = document.createElement("td");
+            timeSlotHead = document.createElement("th");
+            timeSlotHead.append(document.createTextNode(time));
+            timeSlotRow.append(timeSlotHead);
+        });
 
-            // fetch according to daydate
+        thead.appendChild(timeSlotRow);
+        timetable.appendChild(thead);
 
-            // if else
-            dayTimeData.style.backgroundColor = "#E5E5E5";
-            dayRow.append(dayTimeData);
-        })
-        timetable.append(dayRow);
-    });
+
+        const tbody = document.createElement("tbody");
+
+        days.forEach(day => {
+            dayRow = document.createElement("tr");
+            dayData = document.createElement("td");
+            dayData.style.backgroundColor = "#CCCCCC";
+            dayData.append(document.createTextNode(day));
+            dayRow.append(dayData);
+
+            timeSlot.forEach(time => {
+                dayTimeData = document.createElement("td");
+
+                extractedData.forEach(data => {
+                    if (data.day == day && time >= data.startTime && time <= data.endTime) {
+                        dayTimeData.style.backgroundColor = "#0D6EFD";
+                    } else {
+                        dayTimeData.style.backgroundColor = "#E5E5E5";
+                    }
+                });
+
+                if (extractedData === undefined || extractedData.length == 0) {
+                    dayTimeData.style.backgroundColor = "#E5E5E5";
+                }
+
+                dayRow.append(dayTimeData);
+            })
+
+            tbody.appendChild(dayRow);
+        });
+
+        timetable.appendChild(tbody);
+    }
+
+    function updateTimetable() {
+        timetable.innerHTML = "";
+        getRoomSchedule();
+    }
 
     function getRoomSchedule() {
         let params = new URLSearchParams();
 
-        params.append("roomId", roomId.value); // reread file, go through steps to find where roomId was
+        params.append("roomId", globalRoomId);
         currentWeek.forEach(date => params.append("dates", date));
 
         fetch(`/reservations?${params.toString()}`)
             .then(res => res.json())
-            .then(data => console.log(data));
+            .then(data => {
+                const extracted = data.map(reservation => ({
+                    day: reservation.day,
+                    date: reservation.date,
+                    startTime: reservation.startTime,
+                    endTime: reservation.endTime
+                }));
+
+                extractedData = extracted;
+                genTimetable();
+            });
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        getRoomSchedule();
+    roomId.addEventListener("change", function() {
+        fetchOneRoom();
+        updateTimetable();
     });
-    
+
 </script>

@@ -9,30 +9,34 @@ exports.getReservationsByRoomId = async (req, res) => {
     const roomId = req.query.roomId;
     const dates = req.query.dates;
 
-    // modify to search within the current selected week
+    const startOfWeek = new Date(dates[0]);
+    const endOfWeek = new Date(dates[dates.length - 1]);
+
     const reservations = await getDB()
         .collection("reservations")
-        .find({ roomId: roomId })
+        .find({ 
+            roomId: roomId,
+            date: {
+                $gte: new Date(startOfWeek),
+                $lte: new Date(endOfWeek)
+            }
+        })
         .toArray();
 
+    const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const reservationDetails = [];
+
     reservations.forEach(reservation => {
-        let startTime = reservation.startTime;
-        startTime.setHours(startTime.getHours() + 8);
+        const startTime = reservation.startTime.toISOString().split("T")[1].slice(0, 5);
+        const endTime = reservation.endTime.toISOString().split("T")[1].slice(0, 5);
 
-        let endTime = reservation.endTime;
-        endTime.setHours(endTime.getHours() + 8);
-
-        const test = reservation.date.getDay();
+        const day = dayNames[reservation.date.getDay()];
         const date = reservation.date.toISOString().split("T")[0];
-        
-        startTime = startTime.toISOString().split("T")[1].slice(0, 5);
-        endTime = endTime.toISOString().split("T")[1].slice(0, 5);
+
+        reservationDetails.push({day, date, startTime, endTime});
     });
-    console.log(roomId);
-    console.log(dates);
     
-    res.json(reservations)
-    
+    res.json(reservationDetails) 
 };
 
 exports.getReservationsByDate = async (req, res) => {
@@ -56,8 +60,12 @@ exports.createReservation = async (req, res) => {
         */
 
         const input_date = new Date(date);
-        const input_startTime = new Date(`${date}T${startTime}`);
-        const input_endTime = new Date(`${date}T${endTime}`);
+
+        let input_startTime = new Date(`${date}T${startTime}`);
+        input_startTime.setHours(input_startTime.getHours() + 8);
+
+        let input_endTime = new Date(`${date}T${endTime}`);
+        input_endTime.setHours(input_endTime.getHours() + 8);
 
         const newReservation = {
             userId: req.session.user._id,
@@ -89,6 +97,8 @@ exports.createReservation = async (req, res) => {
             timestamp: new Date(),
         };
         await getDB().collection("logs").insertOne(logEntry);
+
+        res.redirect('/users/dashboard');
 
     } catch (err) {
         console.error("Error creating reservation:", err);

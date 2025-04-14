@@ -2,8 +2,8 @@
 <select name="roomId" id="roomId"></select>
 
 <script>
-    // <select> component
     const roomId = document.getElementById("roomId");
+    let globalRoomId;
 
     function fetchOneRoom() {
         const room_id = roomId.value;
@@ -15,6 +15,8 @@
                 document.getElementById("description").textContent = `Description: ${data.description}`;
                 document.getElementById("pax").textContent = `Pax: ${data.pax}`;
             })
+
+        globalRoomId = room_id;
     };
 
     fetch('/rooms/all')
@@ -27,16 +29,15 @@
 
                 if(index === 0) {
                     option.selected = true;
+                    globalRoomId = room._id;
                 }
 
                 roomId.appendChild(option);
             });
             
+            // If placed outside of fetch(), this code will fail since JS executes it before <select> is finished loading.
             fetchOneRoom();
+            getRoomSchedule();
         })
         .catch(error => console.error("Error loading rooms:", error)); 
-
-    roomId.addEventListener("change", function() {
-        fetchOneRoom();
-    });
 </script>
