@@ -1,7 +1,7 @@
 <div class="week-loader">
-    <button type="button" onclick="getPrevWeek()">Previous Week</button>
+    <button type="button" id="getPrevWeek">Previous Week</button>
     <p id="displayed-week">Current Week</p>
-    <button type="button" onclick="getNextWeek()">Next Week</button>
+    <button type="button" id="getNextWeek">Next Week</button>
 </div>
 
 <table class="timetable" id="timetable">
@@ -20,7 +20,7 @@
             // Continue from the last displayed Monday
             baseDate = new Date(currentMonday);
         } else {
-            // Calculate the current Monday if no previous week exists
+            // Calculate the current Monday if no current Monday exist
             const today = new Date();
             const dayOfWeek = today.getDay();
             baseDate = new Date(today);
@@ -55,18 +55,6 @@
         return week
     }
 
-    function getNextWeek() {
-        currentWeek = updateWeekDisplay(7);
-        console.log(currentWeek);
-        genDayDateMap();
-    }
-
-    function getPrevWeek() {
-        currentWeek = updateWeekDisplay(-7);
-        console.log(currentWeek);
-        genDayDateMap();
-    }
-
     function genDayDateMap() {
         const i = [0, 1, 2, 3, 4];
 
@@ -78,6 +66,20 @@
             console.log(`Key: ${key}, Value: ${value}`);
         });
     }
+
+    document.getElementById("getPrevWeek").addEventListener("click", function(event) {
+        event.preventDefault();
+        currentWeek = updateWeekDisplay(-7);
+        genDayDateMap();
+        updateTimetable();
+    });
+
+    document.getElementById("getNextWeek").addEventListener("click", function(event) {
+        event.preventDefault();
+        currentWeek = updateWeekDisplay(7);
+        genDayDateMap();
+        updateTimetable();
+    });
 
     // Show current week on page load
     document.addEventListener("DOMContentLoaded", function () {
@@ -111,7 +113,6 @@
 
         thead.appendChild(timeSlotRow);
         timetable.appendChild(thead);
-
 
         const tbody = document.createElement("tbody");
 
