@@ -9,6 +9,9 @@
 
 <!-- Load Current Week -->
 <script>
+    const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+    const timeSlot = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
+
     let currentMonday;
     let currentWeek;
     let currentDayDate = new Map();
@@ -30,7 +33,7 @@
 
         // Move forward or backward
         baseDate.setDate(baseDate.getDate() + offsetDays);
-        currentMonday = new Date(baseDate); // Update current Monday
+        currentMonday = new Date(baseDate);
 
         // Generate the Monday-Friday week
         const weekDates = [];
@@ -61,45 +64,37 @@
         i.forEach((i) => {
             currentDayDate.set(days[i], currentWeek[i]);
         });
-
-        currentDayDate.forEach((value, key) => {
-            console.log(`Key: ${key}, Value: ${value}`);
-        });
     }
-
-    document.getElementById("getPrevWeek").addEventListener("click", function(event) {
-        event.preventDefault();
-        currentWeek = updateWeekDisplay(-7);
-        genDayDateMap();
-        updateTimetable();
-    });
-
-    document.getElementById("getNextWeek").addEventListener("click", function(event) {
-        event.preventDefault();
-        currentWeek = updateWeekDisplay(7);
-        genDayDateMap();
-        updateTimetable();
-    });
 
     // Show current week on page load
     document.addEventListener("DOMContentLoaded", function () {
         currentWeek = updateWeekDisplay(0);
         genDayDateMap();
     });
+
+    document.getElementById("getPrevWeek").addEventListener("click", function() {
+        currentWeek = updateWeekDisplay(-7);
+        genDayDateMap();
+        updateTimetable();
+    });
+
+    document.getElementById("getNextWeek").addEventListener("click", function() {
+        currentWeek = updateWeekDisplay(7);
+        genDayDateMap();
+        updateTimetable();
+    });
 </script>
 
 
 <!-- Reservation Schedule Display -->
 <script>
-    const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-    const timeSlot = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
-
     const timetable = document.getElementById('timetable');
     const timeSlotRow = document.getElementById('timeslot-row');
 
     let extractedData;
 
     function genTimetable() {
+        // Table Head
         const thead = document.createElement("thead");
         const timeSlotRow = document.createElement("tr");
 
@@ -114,6 +109,7 @@
         thead.appendChild(timeSlotRow);
         timetable.appendChild(thead);
 
+        // Table Body
         const tbody = document.createElement("tbody");
 
         days.forEach(day => {
