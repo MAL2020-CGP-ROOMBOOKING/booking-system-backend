@@ -9,10 +9,24 @@ a {
     text-decoration: none;
 }
 
+/* Reusable */
+.blue-button {
+    background-color: #0D6EFD;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.blue-button:hover {
+    background-color: #0B5ED7;
+}
+.blue-button:active {
+    background-color: #094599;
+}
+
 .navbar {
     display: flex;
     background-color: #212529;
-    padding: 1.1rem;
+    padding: 1rem;
     justify-content: space-between;
 }
 .navbar span {
@@ -28,7 +42,7 @@ a {
     color: #989D9E;
     transition: 0.3s;
 }
-.navbar a.active, .navbar a:hover {
+.navbar a:hover, .navbar a.active {
     color: #DAE5E5;
 }
 
@@ -88,20 +102,11 @@ a {
     width: 100%;
     padding: .6rem;
     font-size: 1rem;
+}
+.account-form input[type=email], .account-form input[type=password], .account-form input[type=text] {
     background-color: #F2F2F2;
 }
-.account-form input[type=submit] {
-    background-color: #0D6EFD;
-    color: white;
-    transition: 0.3s;
-    cursor: pointer;
-}
-.account-form input[type=submit]:hover {
-    background-color: #0B5ED7;
-}
-.account-form input[type=submit]:active {
-    background-color: #094599;
-}
+
 
 /* Signup button under login */
 .signup-section {
@@ -111,19 +116,9 @@ a {
     margin-top: 80px;
 }
 .signup-section a {
-    background-color: #0D6EFD;
-    cursor: pointer;
-    color: white;
     border-radius: 16px;
     padding: .5rem 1rem;
     margin-top: 16px;
-    transition: 0.3s;
-}
-.signup-section a:hover {
-    background-color: #0B5ED7;
-}
-.signup-section a:active {
-    background-color: #094599;
 }
 
 /* Return to previous page */
@@ -133,7 +128,7 @@ a {
 .back-header a {
     font-size: 1.2rem;
     font-weight: bold;
-    padding: 1.1rem;
+    padding: 1rem;
     cursor: pointer;
 }
 
@@ -166,19 +161,9 @@ a {
 }
 .dashboard-body a {
     align-self: center;
-    border-radius: 8px;
-    background-color: #0D6EFD;
-    color: white;
-    transition: 0.3s;
-    cursor: pointer;
+    border-radius: 16px;
     padding: 1rem;
     margin: 3.6rem;
-}
-.dashboard-body a:hover {
-    background-color: #0B5ED7;
-}
-.dashboard-body a:active {
-    background-color: #094599;
 }
 
 /* Reservation Page */
@@ -191,7 +176,6 @@ a {
 .reservation-main p {
     text-align: center;
 }
-
 .reservation-top {
     display: flex;
     gap: 20px;
@@ -236,21 +220,11 @@ a {
 .reservation-main input[type=submit] {
     display: block;
     border: none;
-    background-color: #0D6EFD;
-    color: white;
-    transition: 0.3s;
-    cursor: pointer;
     padding: .6rem;
     font-size: 1.2rem;
     width: 50%;
     border-radius: 8px;
     margin: 2rem auto 0 auto;
-}
-.reservation-main input[type=submit]:hover {
-    background-color: #0B5ED7;
-}
-.reservation-main input[type=submit]:active {
-    background-color: #094599;
 }
 
 .week-loader {
@@ -265,17 +239,7 @@ a {
 .week-loader button {
     border: none;
     border-radius: 8px;
-    background-color: #0D6EFD;
-    color: white;
-    transition: 0.3s;
-    cursor: pointer;
     padding: .5rem;
-}
-.week-loader button:hover {
-    background-color: #0B5ED7;
-}
-.week-loader button:active {
-    background-color: #094599;
 }
 
 .timetable {
