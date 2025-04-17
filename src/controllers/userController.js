@@ -126,3 +126,13 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ error: "Failed to delete user" });
     }
 };
+
+exports.getUserCount = async (req, res) => {
+    try {
+        const userCount = await getDB().collection("users").countDocuments({});
+        res.json({count: userCount});
+    } catch (err) {
+        console.error("Error fetching users:", err.message);
+        res.status(500).json({ error: "Failed to fetch users", details: err.message });
+    }
+};

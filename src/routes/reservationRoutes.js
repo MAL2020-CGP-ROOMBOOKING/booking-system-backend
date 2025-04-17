@@ -8,6 +8,8 @@ router.post('/create', reservationController.createReservation)
 // in progress
 router.get('/', reservationController.getReservationsByRoomId);
 
+router.get('/countAll', reservationController.getReservationCount);
+
 /*
 router.get("/", getAllReservations);
 router.put("/:reservationId", updateReservation);

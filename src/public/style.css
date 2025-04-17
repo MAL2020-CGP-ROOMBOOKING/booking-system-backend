@@ -263,28 +263,32 @@ a {
     text-align: center;
 }
 .admin-dashboard h1 {
-    border: 1px solid red;
     margin-top: 60px;
     font-size: 2.4rem;
     font-weight: normal;
     color: #0D6EFD;
 }
 .admin-dashboard p {
-    border: 1px solid orangered;
     margin-top: 16px;
     color: grey;
 }
+.admin-dashboard a {
+    display: inline-block;
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin-top: 2.4rem;
+    font-size: 1.2rem;
+}
+
 .admin-dashboard-card-container {
-    border: 1px solid yellow;
     margin-top: 32px;
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 .admin-dashboard-card {
-    border: 1px solid yellowgreen;
     text-align: center;
-    background-color: whitesmoke;
+    background-color: aliceblue;
     border-radius: 8px;
     padding: 2rem 0;
     margin: 0 2rem;
@@ -292,6 +296,7 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0px 5px 10px #999999;
 }
 .admin-dashboard-card h2 {
     font-weight: normal;

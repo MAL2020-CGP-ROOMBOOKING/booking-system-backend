@@ -8,6 +8,8 @@ router.post('/signup', userController.postCreateUser);
 // router.patch('/update', updateUser);
 
 router.get('/dashboard', userController.renderDashboard);
+
+router.get('/countAll', userController.getUserCount);
 /*
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);

@@ -32,11 +32,11 @@
                 </div>
             </div>
 
+            <p><a class="blue-button">Manage Bookings</a></p>
         </main>
 
         <script>
             const roomsParagraph = document.getElementById("rooms-p");
-
             fetch('/rooms/countAll')
                 .then(response => response.json())
                 .then(data => {
@@ -44,6 +44,26 @@
                 })
                 .catch(err => {
                     console.error("Error fetching room count:", err);
+                });
+
+            const bookingsParagraph = document.getElementById("bookings-p");
+            fetch('/reservations/countAll')
+                .then(response => response.json())
+                .then(data => {
+                    bookingsParagraph.textContent = data.count;
+                })
+                .catch(err => {
+                    console.error("Error fetching reservation count:", err);
+                });
+
+            const usersParagraph = document.getElementById("users-p");
+            fetch('/users/countAll')
+                .then(response => response.json())
+                .then(data => {
+                    usersParagraph.textContent = data.count;
+                })
+                .catch(err => {
+                    console.error("Error fetching user count:", err);
                 });
         </script>
     </body>
