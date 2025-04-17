@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Dashboard</title>
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -16,23 +16,35 @@
                 <div class="admin-dashboard-card">
                     <img src="/room-icon.png" width="60" height="60">
                     <h2>Rooms</h2>
-                    <p>10</p>
+                    <p id="rooms-p"></p>
                 </div>
 
                 <div class="admin-dashboard-card">
                     <img src="/checkmark-icon.png" width="60" height="60">
                     <h2>Bookings</h2>
-                    <p>10</p>
+                    <p id="bookings-p"></p>
                 </div>
 
                 <div class="admin-dashboard-card">
                     <img src="/user-icon.png" width="60" height="60">
                     <h2>Users</h2>
-                    <p>10</p>
+                    <p id="users-p"></p>
                 </div>
             </div>
 
         </main>
-            
+
+        <script>
+            const roomsParagraph = document.getElementById("rooms-p");
+
+            fetch('/rooms/countAll')
+                .then(response => response.json())
+                .then(data => {
+                    roomsParagraph.textContent = data.count;
+                })
+                .catch(err => {
+                    console.error("Error fetching room count:", err);
+                });
+        </script>
     </body>
 </html>

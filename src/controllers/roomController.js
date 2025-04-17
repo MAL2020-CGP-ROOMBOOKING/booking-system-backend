@@ -155,3 +155,13 @@ exports.deleteRoom = async (req, res) => {
         res.status(500).json({ error: "Failed to delete room", details: err.message });
     }
 };
+
+exports.getRoomCount = async (req, res) => {
+    try {
+        const roomCount = await getDB().collection("rooms").countDocuments({});
+        res.json({count: roomCount});
+    } catch (err) {
+        console.error("Error fetching rooms:", err.message);
+        res.status(500).json({ error: "Failed to fetch rooms", details: err.message });
+    }
+};
