@@ -1,18 +1,15 @@
 const express = require("express");
-const { getReservationsByDate, getReservationsByRoomId, createReservation, deleteReservation, renderCreateReservation } = require("../controllers/reservationController.js");
-
 const router = express.Router();
+const reservationController = require("../controllers/reservationController.js");
 
-router.get('/create', renderCreateReservation);
-router.post('/create', createReservation)
+router.get('/create', reservationController.renderCreateReservation);
+router.post('/create', reservationController.createReservation)
 
 // in progress
-router.get('/', getReservationsByRoomId);
+router.get('/', reservationController.getReservationsByRoomId);
 
 /*
 router.get("/", getAllReservations);
-router.get("/:reservationId", getReservationById);
-router.post("/", createReservation);
 router.put("/:reservationId", updateReservation);
 router.delete("/:reservationId", deleteReservation);
 */

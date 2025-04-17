@@ -1,10 +1,9 @@
 const express = require("express");
-const { getAllLogs, getLogById, createLog } = require("../controllers/logController");
-
 const router = express.Router();
+const logController = require("../controllers/logController");
 
-router.post("/", createLog);
-router.get("/", getAllLogs);
-router.get("/:logId", getLogById);
+router.post("/", logController.createLog);
+router.get("/", logController.getAllLogs);
+router.get("/:logId", logController.getLogById);
 
 module.exports = router;

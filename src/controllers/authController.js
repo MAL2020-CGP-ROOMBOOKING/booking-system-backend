@@ -17,7 +17,7 @@ exports.postLogin = async (req, res) => {
 
             if(!account) {
                 res.render('login', {user: null, currentPage: "login", message: 'This account does not exist.'})
-                // debug
+                // debug - add more later
                 console.log("User does not exist.")
                 return;
             }
@@ -38,7 +38,7 @@ exports.postLogin = async (req, res) => {
             role: account.role
         };
 
-        // confirm info
+        // confirm info - remove later
         console.log(req.session.user);
         
         if(account.role === 'admin'){

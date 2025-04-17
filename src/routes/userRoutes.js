@@ -1,18 +1,16 @@
 const express = require("express");
-const { updateUser, deleteUser, postCreateUser, renderCreateUser, renderLoginUser, postLoginUser, renderDashboard } = require("../controllers/userController");
-
 const router = express.Router();
+const userController = require("../controllers/userController");
 
-router.get('/signup', renderCreateUser);
-router.post('/signup', postCreateUser);
+router.get('/signup', userController.renderCreateUser);
+router.post('/signup', userController.postCreateUser);
 
 // router.patch('/update', updateUser);
 
-router.get('/dashboard', renderDashboard);
+router.get('/dashboard', userController.renderDashboard);
 /*
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
-router.put("/:id", updateUser); can use Patch instead
 router.delete("/:id", deleteUser);
 */
 

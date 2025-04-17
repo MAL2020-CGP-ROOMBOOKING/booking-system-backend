@@ -1,16 +1,13 @@
 const express = require("express");
-const { getAllAnnouncements, getAnnouncementById, createAnnouncement, updateAnnouncement, deleteAnnouncement, renderCreateAnnouncement, postCreateAnnouncement } = require("../controllers/announcementController");
-
 const router = express.Router();
+const announcementController = require("../controllers/announcementController");
 
-router.get('/create', renderCreateAnnouncement);
-router.post('/create', postCreateAnnouncement);
-
+router.get('/create', announcementController.renderCreateAnnouncement);
+router.post('/create', announcementController.postCreateAnnouncement);
 
 /*
 router.get("/", getAllAnnouncements);
 router.get("/:announcementId", getAnnouncementById);
-router.post("/", createAnnouncement);
 router.put("/:announcementId", updateAnnouncement);
 router.delete("/:announcementId", deleteAnnouncement);
 */

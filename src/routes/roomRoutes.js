@@ -1,18 +1,16 @@
 const express = require("express");
-const { getAllRooms, getRoomById, updateRoom, deleteRoom, postCreateRoom, renderCreateRoom } = require("../controllers/roomController");
-
 const router = express.Router();
+const roomController = require("../controllers/roomController");
 
-router.get('/create', renderCreateRoom);
-router.post('/create', postCreateRoom);
+router.get('/create', roomController.renderCreateRoom);
+router.post('/create', roomController.postCreateRoom);
 
-router.get('/all', getAllRooms);
-router.get('/:roomId', getRoomById);
+router.get('/countAll', roomController.getRoomCount);
+
+router.get('/all', roomController.getAllRooms);
+router.get('/:roomId', roomController.getRoomById); // Keep this last, otherwise bugs might appear.
 
 /*
-router.get("/", getAllRooms);
-router.get("/:roomId", getRoomById);
-router.post("/", createRoom);
 router.put("/:roomId", updateRoom);
 router.delete("/:roomId", deleteRoom);
 */
