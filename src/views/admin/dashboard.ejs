@@ -5,66 +5,66 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-    <body>
-        <%- include('../partials/navbar') %>
+<body>
+    <%- include('../partials/navbar') %>
 
-        <main class="admin-dashboard">
-            <h1>Welcome, Admin!</h1>
-            <p>Here is an overview of system activity</p>
+    <main class="admin-dashboard">
+        <h1>Welcome, Admin!</h1>
+        <p>Here is an overview of system activity</p>
 
-            <div class="admin-dashboard-card-container">
-                <div class="admin-dashboard-card">
-                    <img src="/room-icon.png" width="60" height="60">
-                    <h2>Rooms</h2>
-                    <p id="rooms-p"></p>
-                </div>
-
-                <div class="admin-dashboard-card">
-                    <img src="/checkmark-icon.png" width="60" height="60">
-                    <h2>Bookings</h2>
-                    <p id="bookings-p"></p>
-                </div>
-
-                <div class="admin-dashboard-card">
-                    <img src="/user-icon.png" width="60" height="60">
-                    <h2>Users</h2>
-                    <p id="users-p"></p>
-                </div>
+        <div class="admin-dashboard-card-container">
+            <div class="admin-dashboard-card">
+                <img src="/room-icon.png" width="60" height="60">
+                <h2>Rooms</h2>
+                <p id="rooms-p"></p>
             </div>
 
-            <p><a class="blue-button">Manage Bookings</a></p>
-        </main>
+            <div class="admin-dashboard-card">
+                <img src="/checkmark-icon.png" width="60" height="60">
+                <h2>Bookings</h2>
+                <p id="bookings-p"></p>
+            </div>
 
-        <script>
-            const roomsParagraph = document.getElementById("rooms-p");
-            fetch('/rooms/countAll')
-                .then(response => response.json())
-                .then(data => {
-                    roomsParagraph.textContent = data.count;
-                })
-                .catch(err => {
-                    console.error("Error fetching room count:", err);
-                });
+            <div class="admin-dashboard-card">
+                <img src="/user-icon.png" width="60" height="60">
+                <h2>Users</h2>
+                <p id="users-p"></p>
+            </div>
+        </div>
 
-            const bookingsParagraph = document.getElementById("bookings-p");
-            fetch('/reservations/countAll')
-                .then(response => response.json())
-                .then(data => {
-                    bookingsParagraph.textContent = data.count;
-                })
-                .catch(err => {
-                    console.error("Error fetching reservation count:", err);
-                });
+        <p><a class="blue-button">Manage Bookings</a></p>
+    </main>
 
-            const usersParagraph = document.getElementById("users-p");
-            fetch('/users/countAll')
-                .then(response => response.json())
-                .then(data => {
-                    usersParagraph.textContent = data.count;
-                })
-                .catch(err => {
-                    console.error("Error fetching user count:", err);
-                });
-        </script>
-    </body>
+    <script>
+        const roomsParagraph = document.getElementById("rooms-p");
+        fetch('/rooms/countAll')
+            .then(response => response.json())
+            .then(data => {
+                roomsParagraph.textContent = data.count;
+            })
+            .catch(err => {
+                console.error("Error fetching room count:", err);
+            });
+
+        const bookingsParagraph = document.getElementById("bookings-p");
+        fetch('/reservations/countAll')
+            .then(response => response.json())
+            .then(data => {
+                bookingsParagraph.textContent = data.count;
+            })
+            .catch(err => {
+                console.error("Error fetching reservation count:", err);
+            });
+
+        const usersParagraph = document.getElementById("users-p");
+        fetch('/users/countAll')
+            .then(response => response.json())
+            .then(data => {
+                usersParagraph.textContent = data.count;
+            })
+            .catch(err => {
+                console.error("Error fetching user count:", err);
+            });
+    </script>
+</body>
 </html>

@@ -1,5 +1,0 @@
-clean mongodb database and create again.
-
-currentDayDate.forEach((value, key) => {
-	console.log(`Key: ${key}, Value: ${value}`);
-});

@@ -5,58 +5,58 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-    <body>
-        <%- include('../partials/navbar') %>
-        <div class="dashboard-body">
-            <header>
-                <p>Announcement here</p>
-            </header>
-            
-            <main>
-                <h1>Upcoming Bookings</h1> <br>
-                <table>
-                    <tr>
-                        <th>#</th>
-                        <th>Room</th>
-                        <th>Date</th>
-                        <th>Day</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Meeting Room A</td>
-                        <td>17-3-2025</td>
-                        <td>Monday</td>
-                        <td>9:30 - 10:30</td>
-                        <td>Pending</td>
-                        <td>Cancel</td>
-                    </tr>
-                </table>
+<body>
+    <%- include('../partials/navbar') %>
+    <div class="dashboard-body">
+        <header>
+            <p>Announcement here</p>
+        </header>
+        
+        <main>
+            <h1>Upcoming Bookings</h1> <br>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Room</th>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Meeting Room A</td>
+                    <td>17-3-2025</td>
+                    <td>Monday</td>
+                    <td>9:30 - 10:30</td>
+                    <td>Pending</td>
+                    <td>Cancel</td>
+                </tr>
+            </table>
 
-                <a class ="blue-button" href="/reservations/create">Book a Room</a>
+            <a class ="blue-button" href="/reservations/create">Book a Room</a>
 
-                <h1>Booking History</h1> <br>
-                <table>
-                    <tr>
-                        <th>#</th>
-                        <th>Room</th>
-                        <th>Date</th>
-                        <th>Day</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Meeting Room A</td>
-                        <td>17-3-2025</td>
-                        <td>Monday</td>
-                        <td>9:30 - 10:30</td>
-                        <td>Completed</td>
-                    </tr>
-                </table>
-            </main>
-        </div> 
-    </body>
+            <h1>Booking History</h1> <br>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Room</th>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Meeting Room A</td>
+                    <td>17-3-2025</td>
+                    <td>Monday</td>
+                    <td>9:30 - 10:30</td>
+                    <td>Completed</td>
+                </tr>
+            </table>
+        </main>
+    </div> 
+</body>
 </html>
