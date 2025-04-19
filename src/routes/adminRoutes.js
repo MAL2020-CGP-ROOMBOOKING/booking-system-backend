@@ -8,4 +8,6 @@ router.get('/signup', adminController.renderCreateAdmin);
 
 router.get('/dashboard', adminController.renderDashboard);
 
+router.get('/manage-reservations', adminController.renderManageReservation);
+
 module.exports = router;
