@@ -1,4 +1,4 @@
-const { getDB } = require("../config/db");
+const { getDB } = require("../db");
 const bcryptor = require("../modules/bcryptor");
 
 exports.renderLogin = async (req, res) => {

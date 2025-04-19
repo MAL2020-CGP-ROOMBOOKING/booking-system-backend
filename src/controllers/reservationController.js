@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb");
-const { getDB } = require("../config/db");
+const { getDB } = require("../db");
 
 exports.renderCreateReservation = async (req, res) => {
     res.render('user/create-reservation', {currentPage: 'bookings'});

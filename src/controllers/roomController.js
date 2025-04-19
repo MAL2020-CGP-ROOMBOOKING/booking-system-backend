@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb");
-const { getDB } = require("../config/db");
+const { getDB } = require("../db");
 
 exports.renderCreateRoom = async (req, res) => {
     res.render('admin/create-room');

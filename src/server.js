@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
-const { connectDB, client } = require("./config/db");
+const { connectDB, client } = require("./db");
 // const { authenticateToken } = require("./middleware/authMiddleware");
 const MongoStore = require("connect-mongo")
 

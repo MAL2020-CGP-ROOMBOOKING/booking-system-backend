@@ -1,4 +1,4 @@
-const { getDB } = require("../config/db");
+const { getDB } = require("../db");
 const bcryptor = require("../modules/bcryptor");
 const { ObjectId } = require("mongodb");
 
@@ -8,6 +8,10 @@ exports.renderCreateAdmin = async (req, res) => {
 
 exports.renderDashboard = async (req, res) => {
     res.render('admin/dashboard', {currentPage: 'dashboard', user : req.session.user});
+};
+
+exports.renderManageReservation = async (req, res) => {
+    res.render('admin/manage-reservations', {currentPage: 'bookings', user: req.session.user});
 };
 
 exports.getAllAdmins = async (req, res) => {
