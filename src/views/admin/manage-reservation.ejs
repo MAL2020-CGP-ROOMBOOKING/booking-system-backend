@@ -27,31 +27,30 @@
                 <div class="filter-group">
                     <label for="filter-month">Select Month</label>
                     <select name="filter-month" id="filter-month">
-                        <option value="12">All</option>
-                        <option value="0">January</option>
-                        <option value="1">February</option>
-                        <option value="2">March</option>
-                        <option value="3">April</option>
-                        <option value="4">May</option>
-                        <option value="5">June</option>
-                        <option value="6">July</option>
-                        <option value="7">August</option>
-                        <option value="8">September</option>
-                        <option value="9">October</option>
-                        <option value="10">November</option>
-                        <option value="11">December</option>
+                        <option value="all">All</option>
+                        <option value=0>January</option>
+                        <option value=1>February</option>
+                        <option value=2>March</option>
+                        <option value=3>April</option>
+                        <option value=4>May</option>
+                        <option value=5>June</option>
+                        <option value=6>July</option>
+                        <option value=7>August</option>
+                        <option value=8>September</option>
+                        <option value=9>October</option>
+                        <option value=10>November</option>
+                        <option value=11>December</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
                     <label for="filter-year">Select Year</label>
                     <select name="filter-year" id="filter-year">
-                        
+                        <option value="all">All</option>
                     </select>
-                    <!-- generate by available year in db -->
                 </div>
 
-                <div class="filter-button">
+                <div class="export-button">
                     <label>&nbsp;</label>
                     <button class="blue-button">Export to File</button>
                 </div>
@@ -60,12 +59,75 @@
         </section>
 
         <section>
-            <!--Table-->
+            <table id="manage-reservation-table"></table>
         </section>
     </main>
 
     <script>
-        // fetch available year
+        const filterYear = document.getElementById("filter-year");
+        const reservationTable = document.getElementById("manage-reservation-table");
+
+        fetch("/reservations/year")
+            .then(response => response.json())
+            .then(years => {
+                years.forEach(year => {
+                    let option = document.createElement("option");
+                    option.value = year;
+                    option.textContent = year;
+                    filterYear.append(option);
+                });
+            })
+
+        function genReservationTable() {
+            // Create table head
+            const reservationColumns = ["No.", "User", "Room", "Date", "Time", "Status", "Actions"];
+
+            const thead = document.createElement("thead");
+            const columnRow = document.createElement("tr");
+
+            reservationColumns.forEach(column => {
+                columnHead = document.createElement("th");
+                columnHead.append(document.createTextNode(column));
+                columnRow.append(columnHead);
+            });
+
+            thead.appendChild(columnRow);
+            reservationTable.appendChild(thead);
+
+            // Table data
+            fetch("/reservations/getAll")
+                .then(response => response.json())
+                .then((reservation, index) => {
+                    reservationRow = document.createElement("tr");
+
+                    number = document.createElement("td");
+                    name = document.createElement("td");
+                    room = document.createElement("td");
+                    date = document.createElement("td");
+                    time = document.createElement("td");
+                    status = document.createElement("td");
+                    action = document.createElement("td");
+
+                    console.log(index);
+
+                    number.append(document.createTextNode(index))
+                    date.textContent = reservation.date;
+                    status.textContent = reservation.status;
+
+                    console.log(number);
+                    console.log(date);
+                    console.log(status);
+
+                    //maybe make a function in controller to return processed values
+
+                    reservationRow.append(number);
+                    reservationRow.append(date);
+                    reservationRow.append(status);
+                    reservationTable.appendChild(reservationRow);
+                });
+            }
+
+        genReservationTable();
     </script>
 </body>
 </html>

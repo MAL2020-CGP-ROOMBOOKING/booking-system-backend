@@ -10,8 +10,10 @@ router.get('/', reservationController.getReservationsByRoomId);
 
 router.get('/countAll', reservationController.getReservationCount);
 
+router.get('/year', reservationController.getExistingYear);
+
+router.get('/getAll', reservationController.getAllReservations);
 /*
-router.get("/", getAllReservations);
 router.put("/:reservationId", updateReservation);
 router.delete("/:reservationId", deleteReservation);
 */

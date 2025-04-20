@@ -36,7 +36,7 @@ exports.getReservationsByRoomId = async (req, res) => {
         reservationDetails.push({day, date, startTime, endTime});
     });
     
-    res.json(reservationDetails) 
+    res.json(reservationDetails);
 };
 
 exports.getReservationsByDate = async (req, res) => {
@@ -162,6 +162,41 @@ exports.getReservationCount = async (req, res) => {
     try {
         const reservationCount = await getDB().collection("reservations").countDocuments({});
         res.json({count: reservationCount});
+    } catch (err) {
+        console.error("Error fetching reservations:", err.message);
+        res.status(500).json({ error: "Failed to fetch reservations", details: err.message });
+    }
+};
+
+exports.getExistingYear = async (req, res) => {
+    try {
+        const reservations = await getDB().collection("reservations").find().toArray();
+        let extractedYears = [];
+
+        reservations.forEach(reservation => {
+            const date = reservation.date.toISOString();
+            const splittedDate = date.split("-");
+            extractedYears.push(splittedDate[0]);
+        });
+
+        // Sort extracted years
+        extractedYears.forEach((_, index) => {
+            if(index != 0){
+                const currYear = extractedYears[index];
+                const prevYear = extractedYears[index - 1];
+
+                const compareResult = currYear.localeCompare(prevYear);
+
+                if(compareResult == 1){
+                    const temp = prevYear;
+                    extractedYears[index - 1] = currYear;
+                    extractedYears[index] = temp;
+                }
+            }
+        });
+
+        const uniqueYears = Array.from(new Set(extractedYears));
+        res.json(uniqueYears);
     } catch (err) {
         console.error("Error fetching reservations:", err.message);
         res.status(500).json({ error: "Failed to fetch reservations", details: err.message });

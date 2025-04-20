@@ -309,15 +309,15 @@ a {
 }
 
 .filter-bar {
+    border: 1px solid red;
     display: flex;
-    gap: 1rem;
+    gap: 1.6rem;
     text-align: left;
-    flex-wrap: wrap; /* optional, makes it responsive */
+    flex-wrap: wrap;
     margin: 32px 8% 0 8%;
 }
-
 .filter-group {
-    flex-grow: 2;
+    flex-grow: 3;
     display: flex;
     flex-direction: column;
 }
@@ -330,15 +330,21 @@ a {
     border-radius: 0.4rem;
 }
 
-.filter-button {
+.export-button {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
-.filter-button button {
+.export-button button {
     margin: 1rem 0;
     padding: 0.5rem;
     font-size: 1rem;
     border: none;
     border-radius: 0.4rem;
+}
+
+#manage-reservation-table {
+    border: 1px solid palevioletred;
+    width: 84%;
+    margin: 32px auto 0 auto;
 }
