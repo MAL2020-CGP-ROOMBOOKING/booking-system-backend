@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <main class="manage-main">
+        <h1>Manage Bookings</h1>
+        <p>View and manage bookings in the system.</p>
+
+        <section>
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="filter-status">Filter by Status</label>
+                    <select name="filter-status" id="filter-status">
+                        <option value="All">All</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-month">Select Month</label>
+                    <select name="filter-month" id="filter-month">
+                        <option value="12">All</option>
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-year">Select Year</label>
+                    <select name="filter-year" id="filter-year">
+                        
+                    </select>
+                    <!-- generate by available year in db -->
+                </div>
+
+                <div class="filter-button">
+                    <label>&nbsp;</label>
+                    <button class="blue-button">Export to File</button>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <!--Table-->
+        </section>
+    </main>
+
+    <script>
+        // fetch available year
+    </script>
+</body>
+</html>

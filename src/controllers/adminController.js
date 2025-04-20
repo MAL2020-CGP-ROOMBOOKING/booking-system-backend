@@ -2,16 +2,12 @@ const { getDB } = require("../db");
 const bcryptor = require("../modules/bcryptor");
 const { ObjectId } = require("mongodb");
 
-exports.renderCreateAdmin = async (req, res) => {
-    res.render('admin-create');
-};
-
 exports.renderDashboard = async (req, res) => {
     res.render('admin/dashboard', {currentPage: 'dashboard', user : req.session.user});
 };
 
 exports.renderManageReservation = async (req, res) => {
-    res.render('admin/manage-reservations', {currentPage: 'bookings', user: req.session.user});
+    res.render('admin/manage-reservation', {currentPage: 'bookings', user: req.session.user});
 };
 
 exports.getAllAdmins = async (req, res) => {
@@ -68,47 +64,5 @@ exports.postCreateAdmin = async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ error: "Failed to create admin" });
-    }
-};
-
-exports.updateAdmin = async (req, res) => {
-    try {
-        const adminId = new ObjectId(req.user.id);
-        const result = await getDB().collection("admins").updateOne({ _id: adminId }, { $set: req.body });
-
-        if (!result.modifiedCount) return res.status(404).json({ error: "Admin not found or no changes made" });
-
-        await getDB().collection("logs").insertOne({
-            actorId: adminId,
-            actorType: req.user.role,
-            action: "ADMIN_UPDATED",
-            details: req.body,
-            timestamp: new Date(),
-        });
-
-        res.json({ message: "Admin updated" });
-    } catch {
-        res.status(500).json({ error: "Failed to update admin" });
-    }
-};
-
-exports.deleteAdmin = async (req, res) => {
-    try {
-        const adminId = new ObjectId(req.user.id);
-        const result = await getDB().collection("admins").deleteOne({ _id: adminId });
-
-        if (!result.deletedCount) return res.status(404).json({ error: "Admin not found" });
-
-        await getDB().collection("logs").insertOne({
-            actorId: adminId,
-            actorType: req.user.role,
-            action: "ADMIN_DELETED",
-            details: { adminId },
-            timestamp: new Date(),
-        });
-
-        res.json({ message: "Admin deleted" });
-    } catch {
-        res.status(500).json({ error: "Failed to delete admin" });
     }
 };
