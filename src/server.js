@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
 const { connectDB, client } = require("./db");
-// const { authenticateToken } = require("./middleware/authMiddleware");
 const MongoStore = require("connect-mongo")
 
 const app = express();
@@ -26,9 +25,7 @@ app.get('/', async (req, res) => {
 });
 
 connectDB().then(() => {
-    // const { authMiddleware } = require("./middleware/authMiddleware");
     app.use("/auth", require("./routes/authRoutes"));
-    
     app.use("/users", require("./routes/userRoutes"));
     app.use("/admins", require("./routes/adminRoutes"));
     app.use("/rooms", require("./routes/roomRoutes"));
